@@ -19,14 +19,14 @@ dependencies = [
     "pydantic >= 2.0",
     "pyyaml",
 ]
+requires-python = ">=3.11"
+dynamic = ["readme"]
 
 [project.optional-dependencies]
 dev = [
     "pytest",
     "pytest-cov",
 ]
-requires-python = ">=3.11"
-dynamic = ["readme"]
 
 [project.scripts]
 aiod-gen-configs = "aiod_registry.utils:_gen_configs_cli"
