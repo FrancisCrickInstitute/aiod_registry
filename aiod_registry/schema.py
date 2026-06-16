@@ -1,8 +1,8 @@
 import builtins
 from pathlib import Path
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator, AnyUrl
+from pydantic import AnyUrl, BaseModel, ConfigDict, Field, model_validator
 from typing_extensions import Annotated
 
 TASK_NAMES = {
@@ -66,6 +66,18 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+ChannelStart = Annotated[
+    Literal[-1, 0],
+    Field(
+        description=(
+            "Lowest integer value shown in the channel dropdown. "
+            "-1 means the first item is 'original image as-is' and image channels are 0-based. "
+            "0 means the first item is model-specific and image channels are 1-based."
+        ),
+    ),
+]
+
+
 class ModelParam(StrictModel):
     name: ParamName
     arg_name: Optional[str] = None
@@ -74,6 +86,15 @@ class ModelParam(StrictModel):
     tooltip: Optional[str] = None
     dtype: Optional[str] = None  # Used of default value is None
     type: Optional[str] = None  # e.g. "channel" for image-aware channel selectors
+    channel_start: ChannelStart = -1
+    channel_start_label: Annotated[
+        str,
+        Field(
+            min_length=1,
+            description="Label for the first channel dropdown item.",
+            examples=["original", "Grayscale", "No nucleus channel"],
+        ),
+    ] = "original"
     _dtype = None  # Determined from value if given
 
     @model_validator(mode="after")
@@ -115,6 +136,16 @@ class ModelParam(StrictModel):
                     )
         else:
             self.dtype = self._dtype
+        return self
+
+    @model_validator(mode="after")
+    def validate_channel_config(self):
+        if self.type != "channel":
+            if self.channel_start != -1 or self.channel_start_label != "original":
+                raise ValueError(
+                    "`channel_start` and `channel_start_label` can only be customized "
+                    'when `type` is "channel".'
+                )
         return self
 
 

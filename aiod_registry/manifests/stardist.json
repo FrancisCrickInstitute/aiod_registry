@@ -174,7 +174,9 @@
             "arg_name": "channel_idx",
             "value": 0,
             "type": "channel",
-            "tooltip": "Select which channel StarDist should use when it needs to extract a single channel from multi-channel input data. Ignored for grayscale inputs and for model variants that consume multi-channel images directly."
+            "channel_start": -1,
+            "channel_start_label": "Don't select channel",
+            "tooltip": "Select which channel StarDist should use. -1=use original image as-is, 0=first channel, 1=second channel, etc. Ignored for model variants that consume multi-channel images directly."
         }
     ]
 }
