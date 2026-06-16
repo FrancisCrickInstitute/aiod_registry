@@ -2,7 +2,15 @@ import builtins
 from pathlib import Path
 from typing import Literal, Optional, Union
 
-from pydantic import AnyUrl, BaseModel, ConfigDict, Field, PrivateAttr, model_validator
+from pydantic import (
+    AfterValidator,
+    AnyUrl,
+    BaseModel,
+    ConfigDict,
+    Field,
+    PrivateAttr,
+    model_validator,
+)
 from typing_extensions import Annotated
 
 TASK_NAMES = {
@@ -45,6 +53,26 @@ Usage = Annotated[
         title="Usage Guide",
         description="A path to a file, a URL, or a string containing the usage guide for the model.",
     ),
+]
+
+
+def _validate_axes(v: str) -> str:
+    if len(set(v)) != len(v):
+        raise ValueError("Axes must not contain repeated characters.")
+    if "Y" not in v or "X" not in v:
+        raise ValueError("Axes must contain at least Y and X.")
+    return v
+
+
+Axes = Annotated[
+    str,
+    Field(
+        ...,
+        min_length=2,
+        pattern=r"^[TCZYX]+$",
+        description="Axes specification for the model (e.g., 'YX' for 2D, 'ZYX' for 3D, 'CZYX' with channels). Must contain at least Y and X, with no repeated letters. Valid characters: T, C, Z, Y, X.",
+    ),
+    AfterValidator(_validate_axes),
 ]
 
 
@@ -229,10 +257,7 @@ class ModelVersionTask(StrictModel):
 
 
 class ModelVersion(StrictModel):
-    axes: Optional[str] = Field(
-        None,
-        description="Axes specification for the model (e.g., 'YX' for 2D, 'ZYX' for 3D, 'YXC' or 'CZYX' with channels)",
-    )
+    axes: Optional[Axes] = None
     tasks: dict[Task, ModelVersionTask]
     metadata: Optional[Metadata] = None
     slug: str = Field(
