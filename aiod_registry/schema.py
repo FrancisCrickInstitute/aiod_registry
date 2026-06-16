@@ -170,7 +170,7 @@ class ModelParam(StrictModel):
 
     @model_validator(mode="after")
     def validate_channel_config(self):
-        if self.type != "channel":
+        if self.param_type != "channel":
             if self.channel_start != -1 or self.channel_start_label != "original":
                 raise ValueError(
                     "`channel_start` and `channel_start_label` can only be customized "
