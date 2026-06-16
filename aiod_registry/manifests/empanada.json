@@ -1,140 +1,176 @@
 {
-    "name": "Empanada",
-    "metadata": {
-      "description": "Empanada contains segmentation models for mitochondria, nuclei, and lipid droplets in EM images.",
-      "authors": [
-        {
-          "name": "Ryan Conrad",
-          "affiliation": "Center for Molecular Microscopy, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Bethesda, MD 20892, USA"
-        },
-        {
-          "name": "Kedar Narayan",
-          "affiliation": "Center for Molecular Microscopy, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Bethesda, MD 20892, USA"
-        }
-      ],
-      "pubs": [
-        {
-          "title": "Instance segmentation of mitochondria in electron microscopy images with a generalist deep learning model trained on a diverse dataset",
-          "info": "Main paper that describes model & data",
-          "url": "https://doi.org/10.1016/j.cels.2022.12.006"
-        }
-      ]
-    },
-    "versions": {
-      "MitoNet v1": {
-        "tasks": {
-          "mito": {
-            "location": "https://zenodo.org/record/6861565/files/MitoNet_v1.pth?download=1"
-          }
-        }
+  "name": "Empanada",
+  "metadata": {
+    "description": "Empanada contains segmentation models for mitochondria, nuclei, and lipid droplets in EM images.",
+    "authors": [
+      {
+        "name": "Ryan Conrad",
+        "affiliation": "Center for Molecular Microscopy, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Bethesda, MD 20892, USA"
       },
-      "MitoNet Mini v1": {
-        "tasks": {
-          "mito": {
-            "location": "https://zenodo.org/record/6861565/files/MitoNet_v1_mini.pth?download=1"
-          }
-        }
-      },
-      "NucleoNet v1": {
-        "tasks": {
-          "nuclei": {
-            "location": "https://zenodo.org/records/15298854/files/PanopticDeepLabPR_663ba73a-0908-4f7d-b59e-88a2d3ea2e39_panoptic_deeplab_pointrend.pth?download=1"
-          }
-        }
-      },
-      "DropNet v1": {
-        "tasks": {
-          "drop": {
-            "location": "https://zenodo.org/records/15298854/files/PanopticDeepLabPR_b0d99498-6c99-4b45-844e-2b4dca58f24a_panoptic_deeplab_pointrend.pth?download=1"
-          }
+      {
+        "name": "Kedar Narayan",
+        "affiliation": "Center for Molecular Microscopy, Center for Cancer Research, National Cancer Institute, National Institutes of Health, Bethesda, MD 20892, USA"
+      }
+    ],
+    "pubs": [
+      {
+        "title": "Instance segmentation of mitochondria in electron microscopy images with a generalist deep learning model trained on a diverse dataset",
+        "info": "Main paper that describes model & data",
+        "url": "https://doi.org/10.1016/j.cels.2022.12.006"
+      }
+    ]
+  },
+  "versions": {
+    "MitoNet v1": {
+      "tasks": {
+        "mito": {
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/6861565/files/MitoNet_v1.pth?download=1"
+            }
+          ]
         }
       }
     },
-    "params": [
-    {
-        "name": "Plane",
-        "arg_name": "plane",
-        "value": ["XY", "XZ", "YZ", "All"],
-        "tooltip": "Whether to use all planes (XY, XZ, YZ) or a single plane"
+    "MitoNet Mini v1": {
+      "tasks": {
+        "mito": {
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/6861565/files/MitoNet_v1_mini.pth?download=1"
+            }
+          ]
+        }
+      }
     },
-    {
-        "name": "Downsampling",
-        "arg_name": "downsampling",
-        "value": [1, 2, 4, 8, 16, 32, 64],
-        "tooltip": "Downsampling factor for the input image"
+    "NucleoNet v1": {
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://zenodo.org/records/15298854/files/PanopticDeepLabPR_663ba73a-0908-4f7d-b59e-88a2d3ea2e39_panoptic_deeplab_pointrend.pth?download=1"
+            }
+          ]
+        }
+      }
     },
-    {
-        "name": "Segmentation threshold",
-        "arg_name": "conf_threshold",
-        "value": 0.5,
-        "tooltip": "Confidence threshold for the segmentation"
-    },
-    {
-        "name": "Center threshold",
-        "arg_name": "center_threshold",
-        "value": 0.1,
-        "tooltip": "Confidence threshold for the center"
-    },
-    {
-        "name": "Minimum distance",
-        "arg_name": "min_distance",
-        "value": 3,
-        "tooltip": "Minimum distance between object centers"
-    },
-    {
-        "name": "Maximum objects",
-        "arg_name": "max_objects",
-        "value": 10000,
-        "tooltip": "Maximum number of objects to segment per class"
-    },
-    {
-        "name": "Semantic only",
-        "arg_name": "semantic_only",
-        "value": false,
-        "tooltip": "Only run semantic segmentation for all classes"
-    },
-    {
-        "name": "Fine boundaries",
-        "arg_name": "fine_boundaries",
-        "value": false,
-        "tooltip": "Finer boundaries between objects"
-    },
-    {
-        "name": "Fill holes",
-        "arg_name": "fill_holes_in_segmentation",
-        "value": false,
-        "tooltip": "Whether to fill holes in the segmentation masks"
-    },
-    {
-        "name": "Median Filter Size",
-        "arg_name": "median_slices",
-        "value": [1, 3, 5, 7, 9, 11],
-        "default": 3,
-        "tooltip": "Number of image slices over which to apply a median filter to semantic segmentation probabilities. Only applies to 3D/'All'."
-    },
-    {
-        "name": "Erode labels (px; 3D)",
-        "arg_name": "label_erosion",
-        "value": 0,
-        "tooltip": "Will erode objects in the masks by specified number of pixels before final consensus. Only applies to 3D/'All'."
-    },
-    {
-        "name": "Dilate labels (px; 3D)",
-        "arg_name": "label_dilation",
-        "value": 0,
-        "tooltip": "Will dilate objects in the masks by specified number of pixels before final consensus. Only applies to 3D/'All'."
-    },
-    {
-        "name": "Voxel Vote",
-        "arg_name": "pixel_vote_thr",
-        "value": 2,
-        "tooltip": "Number of stacks from ortho-plane inference in which a voxel must be labelled in order to end up in the consensus segmentation. Only applies to 3D/'All'."
-    },
-    {
-        "name": "Allow single-plane objects",
-        "arg_name": "allow_one_view",
-        "value": false,
-        "tooltip": "Whether to allow objects that are only segmented in a single plane (XY, XZ, or YZ) to be included in the final consensus segmentation. Only applies to 3D/'All'."
+    "DropNet v1": {
+      "tasks": {
+        "drop": {
+          "locations": [
+            {
+              "location": "https://zenodo.org/records/15298854/files/PanopticDeepLabPR_b0d99498-6c99-4b45-844e-2b4dca58f24a_panoptic_deeplab_pointrend.pth?download=1"
+            }
+          ]
+        }
+      }
     }
-    ]
-  }
+  },
+  "params": [
+    {
+      "name": "Plane",
+      "arg_name": "plane",
+      "value": [
+        "XY",
+        "XZ",
+        "YZ",
+        "All"
+      ],
+      "tooltip": "Whether to use all planes (XY, XZ, YZ) or a single plane"
+    },
+    {
+      "name": "Downsampling",
+      "arg_name": "downsampling",
+      "value": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "tooltip": "Downsampling factor for the input image"
+    },
+    {
+      "name": "Segmentation threshold",
+      "arg_name": "conf_threshold",
+      "value": 0.5,
+      "tooltip": "Confidence threshold for the segmentation"
+    },
+    {
+      "name": "Center threshold",
+      "arg_name": "center_threshold",
+      "value": 0.1,
+      "tooltip": "Confidence threshold for the center"
+    },
+    {
+      "name": "Minimum distance",
+      "arg_name": "min_distance",
+      "value": 3,
+      "tooltip": "Minimum distance between object centers"
+    },
+    {
+      "name": "Maximum objects",
+      "arg_name": "max_objects",
+      "value": 10000,
+      "tooltip": "Maximum number of objects to segment per class"
+    },
+    {
+      "name": "Semantic only",
+      "arg_name": "semantic_only",
+      "value": false,
+      "tooltip": "Only run semantic segmentation for all classes"
+    },
+    {
+      "name": "Fine boundaries",
+      "arg_name": "fine_boundaries",
+      "value": false,
+      "tooltip": "Finer boundaries between objects"
+    },
+    {
+      "name": "Fill holes",
+      "arg_name": "fill_holes_in_segmentation",
+      "value": false,
+      "tooltip": "Whether to fill holes in the segmentation masks"
+    },
+    {
+      "name": "Median Filter Size",
+      "arg_name": "median_slices",
+      "value": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11
+      ],
+      "default": 3,
+      "tooltip": "Number of image slices over which to apply a median filter to semantic segmentation probabilities. Only applies to 3D/'All'."
+    },
+    {
+      "name": "Erode labels (px; 3D)",
+      "arg_name": "label_erosion",
+      "value": 0,
+      "tooltip": "Will erode objects in the masks by specified number of pixels before final consensus. Only applies to 3D/'All'."
+    },
+    {
+      "name": "Dilate labels (px; 3D)",
+      "arg_name": "label_dilation",
+      "value": 0,
+      "tooltip": "Will dilate objects in the masks by specified number of pixels before final consensus. Only applies to 3D/'All'."
+    },
+    {
+      "name": "Voxel Vote",
+      "arg_name": "pixel_vote_thr",
+      "value": 2,
+      "tooltip": "Number of stacks from ortho-plane inference in which a voxel must be labelled in order to end up in the consensus segmentation. Only applies to 3D/'All'."
+    },
+    {
+      "name": "Allow single-plane objects",
+      "arg_name": "allow_one_view",
+      "value": false,
+      "tooltip": "Whether to allow objects that are only segmented in a single plane (XY, XZ, or YZ) to be included in the final consensus segmentation. Only applies to 3D/'All'."
+    }
+  ]
+}

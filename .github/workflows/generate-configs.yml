@@ -1,0 +1,64 @@
+name: Generate Default Configs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # On PRs: fail if committed configs are stale relative to the manifests
+  check-configs:
+    name: Check configs are up to date
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Regenerate configs
+        run: aiod-gen-configs
+
+      - name: Fail if configs are stale
+        run: |
+          git add default_configs/
+          git diff --cached --exit-code || \
+            (echo "::error::Default configs are out of date. Run `aiod-gen-configs` command locally and commit the results." && exit 1)
+
+  # On merge to main: regenerate and commit any changes
+  update-configs:
+    name: Update and commit default configs
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Generate configs
+        run: aiod-gen-configs
+
+      - name: Commit and push updated configs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add default_configs/
+          git diff --cached --quiet || git commit -m "chore: regenerate default configs [skip ci]"
+          git push

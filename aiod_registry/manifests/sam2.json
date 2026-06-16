@@ -7,202 +7,222 @@
     "url": "https://ai.meta.com/sam2/",
     "repo": "https://github.com/facebookresearch/segment-anything-2",
     "pubs": [
-        {
-            "title": "SAM 2: Segment Anything in Images and Videos",
-            "info": "Main paper that describes model & data",
-            "url": "https://ai.meta.com/research/publications/sam-2-segment-anything-in-images-and-videos/",
-            "authors": [
-                {
-                    "name": "Nikhila Ravi",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Valentin Gabeur",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Yuan-Ting Hu",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Ronghang Hu",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Chay Ryali",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Tengyu Ma",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Haitham Khedr",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Roman Rädle",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Chloe Rolland",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Laura Gustafson",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Eric Mintun",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Junting Pan",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Kalyan Vasudev Alwala",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Nicolas Carion",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Chao-Yuan Wu",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Ross Girshick",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Piotr Dollar",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                },
-                {
-                    "name": "Christoph Feichtenhofer",
-                    "affiliation": "Meta AI Rsearch, FAIR"
-                }
-            ]
-        }
+      {
+        "title": "SAM 2: Segment Anything in Images and Videos",
+        "info": "Main paper that describes model & data",
+        "url": "https://ai.meta.com/research/publications/sam-2-segment-anything-in-images-and-videos/",
+        "authors": [
+          {
+            "name": "Nikhila Ravi",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Valentin Gabeur",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Yuan-Ting Hu",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Ronghang Hu",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Chay Ryali",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Tengyu Ma",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Haitham Khedr",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Roman R\u00e4dle",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Chloe Rolland",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Laura Gustafson",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Eric Mintun",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Junting Pan",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Kalyan Vasudev Alwala",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Nicolas Carion",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Chao-Yuan Wu",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Ross Girshick",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Piotr Dollar",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          },
+          {
+            "name": "Christoph Feichtenhofer",
+            "affiliation": "Meta AI Rsearch, FAIR"
+          }
+        ]
+      }
     ]
   },
   "versions": {
     "default": {
       "tasks": {
         "everything": {
-          "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"
+          "locations": [
+            {
+              "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"
+            }
+          ]
         }
       }
     },
     "hiera_base": {
-        "tasks": {
-          "everything": {
-            "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"
-          }
+      "tasks": {
+        "everything": {
+          "locations": [
+            {
+              "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"
+            }
+          ]
         }
-      },
+      }
+    },
     "hiera_small": {
       "tasks": {
         "everything": {
-          "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt"
+          "locations": [
+            {
+              "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt"
+            }
+          ]
         }
       }
     },
     "hiera_large": {
       "tasks": {
         "everything": {
-          "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt"
+          "locations": [
+            {
+              "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt"
+            }
+          ]
         }
       }
     },
     "hiera_tiny": {
       "tasks": {
         "everything": {
-          "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt"
+          "locations": [
+            {
+              "location": "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt"
+            }
+          ]
         }
       }
     }
   },
   "params": [
     {
-        "name": "Points per side",
-        "arg_name": "points_per_side",
-        "value": 32,
-        "tooltip": "Number of point prompts per side, controlling density of point grid. Higher values will capture more objects (rightly or wrongly), but take longer to run."
+      "name": "Points per side",
+      "arg_name": "points_per_side",
+      "value": 32,
+      "tooltip": "Number of point prompts per side, controlling density of point grid. Higher values will capture more objects (rightly or wrongly), but take longer to run."
     },
     {
-        "name": "Points per batch",
-        "arg_name": "points_per_batch",
-        "value": 64,
-        "tooltip": "Number of points to process per batch. Higher values will be faster but will require more (GPU) memory."
+      "name": "Points per batch",
+      "arg_name": "points_per_batch",
+      "value": 64,
+      "tooltip": "Number of points to process per batch. Higher values will be faster but will require more (GPU) memory."
     },
     {
-        "name": "Pred IoU threshold",
-        "arg_name": "pred_iou_thresh",
-        "value": 0.88,
-        "tooltip": "Threshold (range [0,1]) for model-predicted IoU, for filtering out low-confidence masks. Higher values will remove more masks."
+      "name": "Pred IoU threshold",
+      "arg_name": "pred_iou_thresh",
+      "value": 0.88,
+      "tooltip": "Threshold (range [0,1]) for model-predicted IoU, for filtering out low-confidence masks. Higher values will remove more masks."
     },
     {
-        "name": "Stability score threshold",
-        "arg_name": "stability_score_thresh",
-        "value": 0.95,
-        "tooltip": "Threshold (range [0,1]) for mask stability score. Higher values will remove more masks, in conjunction with stability score offset that controls level of stability measured."
+      "name": "Stability score threshold",
+      "arg_name": "stability_score_thresh",
+      "value": 0.95,
+      "tooltip": "Threshold (range [0,1]) for mask stability score. Higher values will remove more masks, in conjunction with stability score offset that controls level of stability measured."
     },
     {
-        "name": "Stability score offset",
-        "arg_name": "stability_score_offset",
-        "value": 1.0,
-        "tooltip": "Amount to shift the cutoff for stability score. Higher values will remove less stable masks."
+      "name": "Stability score offset",
+      "arg_name": "stability_score_offset",
+      "value": 1.0,
+      "tooltip": "Amount to shift the cutoff for stability score. Higher values will remove less stable masks."
     },
     {
-        "name": "Box NMS IoU threshold",
-        "arg_name": "box_nms_thresh",
-        "value": 0.7,
-        "tooltip": "The IoU threshold (range [0,1]) for non-maximum suppression of boxes. Lower values will merge more masks, useful to reduce mask 'halos' and speed-up postprocessing, but could lead to undersegmentation/agglomeration."
+      "name": "Box NMS IoU threshold",
+      "arg_name": "box_nms_thresh",
+      "value": 0.7,
+      "tooltip": "The IoU threshold (range [0,1]) for non-maximum suppression of boxes. Lower values will merge more masks, useful to reduce mask 'halos' and speed-up postprocessing, but could lead to undersegmentation/agglomeration."
     },
     {
-        "name": "Crop N layers",
-        "arg_name": "crop_n_layers",
-        "value": 0,
-        "tooltip": "Values >0 will crop the image into N layers, which will be processed separately, giving more detail but taking longer. Each deeper layer will have more crops (2^N). Balance number of point prompts with 'Crop N points downscale factor'."
+      "name": "Crop N layers",
+      "arg_name": "crop_n_layers",
+      "value": 0,
+      "tooltip": "Values >0 will crop the image into N layers, which will be processed separately, giving more detail but taking longer. Each deeper layer will have more crops (2^N). Balance number of point prompts with 'Crop N points downscale factor'."
     },
     {
-        "name": "Crop NMS IoU threshold",
-        "arg_name": "crop_nms_thresh",
-        "value": 0.7,
-        "tooltip": "Same as Box NMS IoU threshold, but for each crop."
+      "name": "Crop NMS IoU threshold",
+      "arg_name": "crop_nms_thresh",
+      "value": 0.7,
+      "tooltip": "Same as Box NMS IoU threshold, but for each crop."
     },
     {
-        "name": "Crop overlap ratio",
-        "arg_name": "crop_overlap_ratio",
-        "value": 0.34133,
-        "tooltip": "The amount which crops overlap. Higher values may help identify more objects, but duplicates computation."
+      "name": "Crop overlap ratio",
+      "arg_name": "crop_overlap_ratio",
+      "value": 0.34133,
+      "tooltip": "The amount which crops overlap. Higher values may help identify more objects, but duplicates computation."
     },
     {
-        "name": "Crop N points downscale factor",
-        "arg_name": "crop_n_points_downscale_factor",
-        "value": 1,
-        "tooltip": "Value to be raised to the power of the crop layer will be used to scale down number of points per side in each crop. Higher values will reduce point grid density in deeper layers."
+      "name": "Crop N points downscale factor",
+      "arg_name": "crop_n_points_downscale_factor",
+      "value": 1,
+      "tooltip": "Value to be raised to the power of the crop layer will be used to scale down number of points per side in each crop. Higher values will reduce point grid density in deeper layers."
     },
     {
-        "name": "Min mask region area",
-        "arg_name": "min_mask_region_area",
-        "value": 0,
-        "tooltip": "Size (in pixels) of masks to remove if identified as a disconnected region or hole. 0 will not remove any masks."
+      "name": "Min mask region area",
+      "arg_name": "min_mask_region_area",
+      "value": 0,
+      "tooltip": "Size (in pixels) of masks to remove if identified as a disconnected region or hole. 0 will not remove any masks."
     },
     {
-        "name": "Use previous mask refinement",
-        "arg_name": "use_m2m",
-        "value": false,
-        "tooltip": "Tick to use one-step refinement using previous mask predictions."
+      "name": "Use previous mask refinement",
+      "arg_name": "use_m2m",
+      "value": false,
+      "tooltip": "Tick to use one-step refinement using previous mask predictions."
     },
     {
-        "name": "Multimask output",
-        "arg_name": "multimask_output",
-        "value": false,
-        "tooltip": "Tick to output multiple masks at each grid point prompt."
+      "name": "Multimask output",
+      "arg_name": "multimask_output",
+      "value": false,
+      "tooltip": "Tick to output multiple masks at each grid point prompt."
     }
   ]
 }

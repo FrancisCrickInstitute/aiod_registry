@@ -65,18 +65,18 @@
           },
           {
             "name": "Marion Louveaux",
-            "affiliation": "Laboratoire Reproduction et Développement des Plantes, Université de Lyon, ENS de Lyon, CNRS, INRAE, Lyon, France"
+            "affiliation": "Laboratoire Reproduction et D\u00e9veloppement des Plantes, Universit\u00e9 de Lyon, ENS de Lyon, CNRS, INRAE, Lyon, France"
           },
           {
             "name": "Christian Wenzl",
             "affiliation": "Centre for Organismal Studies, Heidelberg University, Heidelberg, Germany"
           },
           {
-            "name": "Sören Strauss",
+            "name": "S\u00f6ren Strauss",
             "affiliation": "Centre for Organismal Studies, Heidelberg University, Heidelberg, Germany"
           },
           {
-            "name": "David Wilson-Sánchez",
+            "name": "David Wilson-S\u00e1nchez",
             "affiliation": "Centre for Organismal Studies, Heidelberg University, Heidelberg, Germany"
           },
           {
@@ -100,7 +100,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7805434/files/unet3d-arabidopsis-ovules-confocal-ds2x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7805434/files/unet3d-arabidopsis-ovules-confocal-ds2x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -108,7 +112,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7765026/files/unet3d-lateral-root-lightsheet-ds1x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7765026/files/unet3d-lateral-root-lightsheet-ds1x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -116,7 +124,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7772553/files/unet3d-arabidopsis-ovules-confocal-ds1x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7772553/files/unet3d-arabidopsis-ovules-confocal-ds1x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -124,7 +136,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7805434/files/unet3d-arabidopsis-ovules-confocal-ds2x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7805434/files/unet3d-arabidopsis-ovules-confocal-ds2x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -132,7 +148,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7772532/files/unet3d-arabidopsis-ovules-confocal-ds3x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7772532/files/unet3d-arabidopsis-ovules-confocal-ds3x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -140,7 +160,11 @@
       "axes": "YX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7772709/files/confocal_2D_unet_ovules_ds2x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7772709/files/confocal_2D_unet_ovules_ds2x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -148,7 +172,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7765026/files/unet3d-lateral-root-lightsheet-ds1x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7765026/files/unet3d-lateral-root-lightsheet-ds1x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -156,7 +184,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7774122/files/unet3d-lateral-root-lightsheet-ds2x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774122/files/unet3d-lateral-root-lightsheet-ds2x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -164,7 +196,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7774145/files/unet3d-lateral-root-lightsheet-ds3x.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774145/files/unet3d-lateral-root-lightsheet-ds3x.pytorch"
+            }
+          ]
         }
       }
     },
@@ -172,7 +208,11 @@
       "axes": "YX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7774537/files/unet2d-lateral-root-lightsheet.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774537/files/unet2d-lateral-root-lightsheet.pytorch"
+            }
+          ]
         }
       }
     },
@@ -180,7 +220,11 @@
       "axes": "ZYX",
       "tasks": {
         "nuclei": {
-          "location": "https://zenodo.org/record/7774421/files/unet3d-lateral-root-nuclei-lightsheet.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774421/files/unet3d-lateral-root-nuclei-lightsheet.pytorch"
+            }
+          ]
         }
       }
     },
@@ -188,7 +232,11 @@
       "axes": "YX",
       "tasks": {
         "nuclei": {
-          "location": "https://zenodo.org/record/7774563/files/unet2d-lateral-root-nuclei-lightsheet.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774563/files/unet2d-lateral-root-nuclei-lightsheet.pytorch"
+            }
+          ]
         }
       }
     },
@@ -196,7 +244,11 @@
       "axes": "YX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7781054/files/confocal_2d_unet_apical_stem.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7781054/files/confocal_2d_unet_apical_stem.pytorch"
+            }
+          ]
         }
       }
     },
@@ -204,7 +256,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7768142/files/confocal_pnas_3d.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7768142/files/confocal_pnas_3d.pytorch"
+            }
+          ]
         }
       }
     },
@@ -212,7 +268,11 @@
       "axes": "ZYX",
       "tasks": {
         "boundaries": {
-          "location": "https://zenodo.org/record/7774490/files/unet-bce-dice-cell-boundary-311021.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774490/files/unet-bce-dice-cell-boundary-311021.pytorch"
+            }
+          ]
         }
       }
     },
@@ -220,7 +280,11 @@
       "axes": "ZYX",
       "tasks": {
         "nuclei": {
-          "location": "https://zenodo.org/record/7774505/files/unet-bce-dice-ab-nuclei-boundary-090121.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/record/7774505/files/unet-bce-dice-ab-nuclei-boundary-090121.pytorch"
+            }
+          ]
         }
       }
     },
@@ -228,7 +292,11 @@
       "axes": "ZYX",
       "tasks": {
         "nuclei": {
-          "location": "https://zenodo.org/records/10070349/files/FOR2581_PlantSeg_Plant_Nuclei_3D.pytorch"
+          "locations": [
+            {
+              "location": "https://zenodo.org/records/10070349/files/FOR2581_PlantSeg_Plant_Nuclei_3D.pytorch"
+            }
+          ]
         }
       }
     }

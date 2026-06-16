@@ -1,14 +1,16 @@
-from pathlib import Path
 import json
+from pathlib import Path
 from typing import Optional, Union
 from urllib.parse import urlparse
+
+import yaml
 
 from aiod_registry import ModelManifest
 
 
-def get_manifest_paths():
+def get_manifest_paths() -> list[Path]:
     json_dir = Path(__file__).parent.parent / "aiod_registry" / "manifests"
-    return json_dir.glob("*.json")
+    return list(json_dir.glob("*.json"))
 
 
 def is_accessible(location: str | None) -> bool:
@@ -24,28 +26,41 @@ def is_accessible(location: str | None) -> bool:
         return True
 
 
+def resolve_version(manifest: ModelManifest, version_input: str) -> str:
+    """Return the registry key for a version given its exact name or slug.
+
+    Tries an exact key match first, then falls back to slug matching.
+    Raises KeyError with a helpful message if neither matches.
+    """
+    if version_input in manifest.versions:
+        return version_input
+    for key, version in manifest.versions.items():
+        if version.slug == version_input:
+            return key
+    available = {k: v.slug for k, v in manifest.versions.items()}
+    raise KeyError(
+        f"Version '{version_input}' not found in manifest '{manifest.name}'. "
+        f"Available versions (name: slug): {available}"
+    )
+
+
 def flatten_manifest(manifest: ModelManifest) -> ModelManifest:
     """
-    Flatten the manifest by just taking the first location and its type, same for config_path.
+    Flatten the manifest by keeping only the first location entry.
     """
     # Make a deep copy of the manifest
     new_manifest = manifest.model_copy(deep=True)
-    # Just take the first location and its type, same for config_path
+    # Keep only the first (location, config_path) pair for each task
     for v_name, version in manifest.versions.items():
         for task_name, task in version.tasks.items():
-            new_manifest.versions[v_name].tasks[task_name].location = task.location[0]
-            new_manifest.versions[v_name].tasks[task_name].config_path = (
-                task.config_path[0] if task.config_path else None
-            )
+            new_manifest.versions[v_name].tasks[task_name].locations = [task.locations[0]]
     return new_manifest
 
 
 def filter_location(manifest: ModelManifest) -> tuple[ModelManifest, bool, int]:
     """
-    Filter and flatten the location, and config_path fields in the manifest.
-    We take the first accessible location and its type.
-    Then take the first accessible config path.
-    If nothing is accessible, set the fields to None.
+    Filter the locations list to the first accessible (location, config_path) pair.
+    If no entry is accessible, remove the task entirely.
     """
     num = 0
     changed = False
@@ -54,20 +69,9 @@ def filter_location(manifest: ModelManifest) -> tuple[ModelManifest, bool, int]:
     # Loop through the versions and tasks and remove inaccessible ones
     for v_name, version in manifest.versions.items():
         for task_name, task in version.tasks.items():
-            # Check model config path and flatten
-            for fpath in task.config_path:
-                if is_accessible(fpath):
-                    res = fpath
-                    break
-            else:
-                res = None
-            new_manifest.versions[v_name].tasks[task_name].config_path = res
-            # Check which location is accessible and flatten
-            for i, loc in enumerate(task.location):
-                if is_accessible(loc):
-                    # Store the first accessible location
-                    new_manifest.versions[v_name].tasks[task_name].location = loc
-                    # NOTE: Not including config path here in case not paired order
+            for entry in task.locations:
+                if is_accessible(entry.location):
+                    new_manifest.versions[v_name].tasks[task_name].locations = [entry]
                     break
             # If no location is accessible, remove the task completely
             else:
@@ -138,8 +142,112 @@ def load_manifests(
                 )
             return new_manifests
         else:
-            # NOTE: Locations etc. at least get flattened so we return the new manifests
             return new_manifests
     else:
-        # We still want to flatten the manifests for consistency
-        return {k: flatten_manifest(v) for k, v in manifests.items()}
+        return manifests
+
+
+def _params_to_yaml(params: list) -> str:
+    """Serialise a list of ModelParam to a YAML string keyed by arg_name."""
+    defaults = {}
+    for param in params:
+        if isinstance(param.value, list):
+            defaults[param.arg_name] = (
+                param.default if param.default is not None else param.value[0]
+            )
+        else:
+            defaults[param.arg_name] = param.value
+    return yaml.safe_dump(
+        defaults, sort_keys=False, default_flow_style=False, allow_unicode=True
+    )
+
+
+def generate_default_config(manifest: ModelManifest, version: str, task: str) -> str:
+    """Return a YAML string of default parameter values for a given model version and task.
+
+    For list-valued params, the effective default is `param.default` if set, otherwise
+    the first element. Returns an empty YAML mapping if the task has no params.
+
+    Raises KeyError if the version or task is not found in the manifest.
+    """
+    if version not in manifest.versions:
+        raise KeyError(
+            f"Version '{version}' not found in manifest '{manifest.name}'. "
+            f"Available versions: {list(manifest.versions.keys())}"
+        )
+    version_obj = manifest.versions[version]
+    if task not in version_obj.tasks:
+        raise KeyError(
+            f"Task '{task}' not found in version '{version}' of manifest '{manifest.name}'. "
+            f"Available tasks: {list(version_obj.tasks.keys())}"
+        )
+    task_obj = version_obj.tasks[task]
+    if not task_obj.params:
+        return yaml.dump({}, default_flow_style=False)
+    return _params_to_yaml(task_obj.params)
+
+
+def save_all_default_configs(
+    output_dir: Union[Path, str] = "default_configs",
+    paths: Optional[list[Union[Path, str]]] = None,
+) -> None:
+    """Generate and save default parameter config YAML files for all models.
+
+    Saves one shared ``{short_name}.yaml`` for model-level params, plus a
+    task-specific ``{short_name}_{version}_{task}.yaml`` only for tasks that
+    define their own params (i.e. not inherited from the model level).
+    Tasks and models with no params at all are skipped.
+
+    ``paths`` is passed directly to :func:`load_manifests`; if omitted, all
+    manifests in the registry are used.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    header = "# Auto-generated by save_all_default_configs - do not edit manually\n"
+    manifests = load_manifests(paths=paths)
+    for manifest in manifests.values():
+        # Write one shared config for model-level params
+        if manifest.params:
+            config_str = _params_to_yaml(manifest.params)
+            filepath = output_dir / f"{manifest.short_name}.yaml"
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(header)
+                f.write(config_str)
+            print(f"Saved {filepath}")
+
+        # Write task-specific configs only where the task has its own params
+        for version_name, version in manifest.versions.items():
+            for task_name, task_obj in version.tasks.items():
+                if task_obj._params_inherited:
+                    continue  # Already covered by the model-level config
+                if not task_obj.params:
+                    print(
+                        f"Skipping {manifest.short_name}/{version_name}/{task_name} — no params defined."
+                    )
+                    continue
+                config_str = _params_to_yaml(task_obj.params)
+                safe_version = version_name.replace(" ", "_")
+                filename = f"{manifest.short_name}_{safe_version}_{task_name}.yaml"
+                filepath = output_dir / filename
+                with open(filepath, "w", encoding="utf-8") as f:
+                    f.write(header)
+                    f.write(config_str)
+                print(f"Saved {filepath}")
+
+
+def _gen_configs_cli() -> None:
+    """Console script entry point for ``aiod-gen-configs``."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        prog="aiod-gen-configs",
+        description="Generate default parameter config YAML files for all registered models.",
+    )
+    parser.add_argument(
+        "output_dir",
+        nargs="?",
+        default="default_configs",
+        help="Directory to write configs into (default: ./default_configs).",
+    )
+    args = parser.parse_args()
+    save_all_default_configs(output_dir=args.output_dir)

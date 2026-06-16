@@ -1,135 +1,143 @@
 {
-    "name": "Cellpose-SAM",
-    "short_name": "cellposesam",
-    "metadata": {
-        "description": "Cellpose-SAM is a generalist model for cell segmentation.",
-        "url": "https://cellpose.readthedocs.io/en/latest/",
-        "repo": "https://github.com/MouseLand/cellpose",
-        "pubs": [
-            {
-                "info": "Cellpose-SAM",
-                "url": "https://doi.org/10.1101/2025.04.28.651001",
-                "title": "Cellpose-SAM: superhuman generalization for cellular segmentation",
-                "doi": "10.1101/2025.04.28.651001",
-                "authors": [
-                    {
-                        "name": "Marius Pachitariu",
-                        "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
-                    },
-                    {
-                        "name": "Michael Rariden",
-                        "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
-                    },
-                    {
-                        "name": "Carsen Stringer",
-                        "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
-                    }
-                ]
-            }
+  "name": "Cellpose-SAM",
+  "short_name": "cellposesam",
+  "metadata": {
+    "description": "Cellpose-SAM is a generalist model for cell segmentation.",
+    "url": "https://cellpose.readthedocs.io/en/latest/",
+    "repo": "https://github.com/MouseLand/cellpose",
+    "pubs": [
+      {
+        "info": "Cellpose-SAM",
+        "url": "https://doi.org/10.1101/2025.04.28.651001",
+        "title": "Cellpose-SAM: superhuman generalization for cellular segmentation",
+        "doi": "10.1101/2025.04.28.651001",
+        "authors": [
+          {
+            "name": "Marius Pachitariu",
+            "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
+          },
+          {
+            "name": "Michael Rariden",
+            "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
+          },
+          {
+            "name": "Carsen Stringer",
+            "affiliation": "HHMI Janelia Research Campus, Ashburn, VA, USA"
+          }
         ]
-    },
-    "versions": {
-        "cpsam": {
-            "tasks": {
-                "cyto": {
-                    "location": "https://huggingface.co/mouseland/cellpose-sam/resolve/main/cpsam"
-                },
-                "nuclei": {
-                    "location": "https://huggingface.co/mouseland/cellpose-sam/resolve/main/cpsam"
-                }
-            }
-        }
-    },
-    "params": [
-        {
-            "name": "Segment Channel",
-            "arg_name": "segment_channel",
-            "value": 1,
-            "type": "channel",
-            "channel_start": 0,
-            "channel_start_label": "Grayscale",
-            "tooltip": "What channel to segment on. Cellpose-SAM is trained to be invariant to channel order and uses the first 3 channels of your image. Cellpose channel convention: 0=grayscale (no specific channel), 1=first image channel, 2=second image channel, etc. See https://cellpose.readthedocs.io/en/latest/settings.html#channels for details."
-        },
-        {
-            "name": "3D Segmentation",
-            "arg_name": "do_3D",
-            "value": false,
-            "tooltip": "Whether to do 3D segmentation. If True, will try to segment in 3D (XY, XZ, YZ). If False, will segment in 2D and combine with stitch_threshold."
-        },
-        {
-            "name": "Resample",
-            "arg_name": "resample",
-            "value": true,
-            "tooltip": "Whether to run dynamics at original image size (rather than likely smaller resized image). Slower, but more accurate boundaries."
-        },
-        {
-            "name": "Stitch Threshold",
-            "arg_name": "stitch_threshold",
-            "value": 0.0,
-            "tooltip": "Threshold for stitching 2D segmentations together. Value is the IoU that constitutes an overlap and thus merge. Only used if do_3D is False and >0."
-        },
-        {
-            "name": "Cellprob Threshold",
-            "arg_name": "cellprob_threshold",
-            "value": 0.0,
-            "tooltip": "Threshold for flows to determine ROIs. Decrease to find more & larger ROIs, increase if too many ROIs (esp. in dim regions). See https://cellpose.readthedocs.io/en/latest/settings.html#cellprob-threshold for details."
-        },
-        {
-            "name": "Flow Threshold",
-            "arg_name": "flow_threshold",
-            "value": 0.4,
-            "tooltip": "Threshold for flows to determine ROIs. Not used for 3D. See https://cellpose.readthedocs.io/en/latest/settings.html#cellprob-threshold for details."
-        },
-        {
-            "name": "Num Iterations",
-            "arg_name": "niter",
-            "value": 0,
-            "tooltip": "Number of iterations to simulate dynamics for. By default (0/None), proportional to ROI diameter. See https://cellpose.readthedocs.io/en/latest/settings.html#number-of-iterations-niter for details."
-        },
-        {
-            "name": "Anisotropy",
-            "arg_name": "anisotropy",
-            "value": null,
-            "dtype": "float",
-            "tooltip": "Optional rescaling factor for Z (e.g. set to 2.0 if Z is sampled half as dense as X or Y). Only used if do_3D is True."
-        },
-        {
-            "name": "Channel axis",
-            "arg_name": "channel_axis",
-            "value": null,
-            "dtype": "int",
-            "tooltip": "Set the axis where channels are stored. 'None' means it tries to figure it out - useful if no/poor metadata and not loading properly."
-        },
-        {
-            "name": "Z axis",
-            "arg_name": "z_axis",
-            "value": null,
-            "dtype": "int",
-            "tooltip": "Set the axis where Z slices are stored. 'None' means it tries to figure it out - useful if no/poor metadata and not loading properly."
-        },
-        {
-            "name": "Batch size",
-            "arg_name": "batch_size",
-            "value": 64,
-            "tooltip": "Number of 224x224 patches to run simultaneously on the GPU. Can make smaller or bigger depending on GPU memory usage."
-        },
-        {
-            "name": "Minimum size",
-            "arg_name": "min_size",
-            "value": 15,
-            "tooltip": "Size (in pixels) of ROIs/to remove if lower. 0 will not remove any masks."
-        },
-        {
-            "name": "Max size fraction",
-            "arg_name": "max_size_fraction",
-            "value": 0.4,
-            "tooltip": "Maximum size of ROIs as fraction of image size. Masks larger than this are removed."
-        },
-        {
-            "name": "Tile Overlap",
-            "arg_name": "tile_overlap",
-            "value": 0.1,
-            "tooltip": "Fraction of overlap of tiles when computing flows."
-        }
+      }
     ]
+  },
+  "versions": {
+    "cpsam": {
+      "tasks": {
+        "cyto": {
+          "locations": [
+            {
+              "location": "https://huggingface.co/mouseland/cellpose-sam/resolve/main/cpsam"
+            }
+          ]
+        },
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://huggingface.co/mouseland/cellpose-sam/resolve/main/cpsam"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "Segment Channel",
+      "arg_name": "segment_channel",
+      "value": 0,
+      "type": "channel",
+      "channel_start": 0,
+      "channel_start_label": "Grayscale",
+      "tooltip": "What channel to segment on. Cellpose-SAM is trained to be invariant to channel order and uses the first 3 channels of your image. Cellpose channel convention: 0=grayscale (no specific channel), 1=first image channel, 2=second image channel, etc. See https://cellpose.readthedocs.io/en/latest/settings.html#channels for details."
+    },
+    {
+      "name": "3D Segmentation",
+      "arg_name": "do_3D",
+      "value": false,
+      "tooltip": "Whether to do 3D segmentation. If True, will try to segment in 3D (XY, XZ, YZ). If False, will segment in 2D and combine with stitch_threshold."
+    },
+    {
+      "name": "Resample",
+      "arg_name": "resample",
+      "value": true,
+      "tooltip": "Whether to run dynamics at original image size (rather than likely smaller resized image). Slower, but more accurate boundaries."
+    },
+    {
+      "name": "Stitch Threshold",
+      "arg_name": "stitch_threshold",
+      "value": 0.0,
+      "tooltip": "Threshold for stitching 2D segmentations together. Value is the IoU that constitutes an overlap and thus merge. Only used if do_3D is False and >0."
+    },
+    {
+      "name": "Cellprob Threshold",
+      "arg_name": "cellprob_threshold",
+      "value": 0.0,
+      "tooltip": "Threshold for flows to determine ROIs. Decrease to find more & larger ROIs, increase if too many ROIs (esp. in dim regions). See https://cellpose.readthedocs.io/en/latest/settings.html#cellprob-threshold for details."
+    },
+    {
+      "name": "Flow Threshold",
+      "arg_name": "flow_threshold",
+      "value": 0.4,
+      "tooltip": "Threshold for flows to determine ROIs. Not used for 3D. See https://cellpose.readthedocs.io/en/latest/settings.html#cellprob-threshold for details."
+    },
+    {
+      "name": "Num Iterations",
+      "arg_name": "niter",
+      "value": 0,
+      "tooltip": "Number of iterations to simulate dynamics for. By default (0/None), proportional to ROI diameter. See https://cellpose.readthedocs.io/en/latest/settings.html#number-of-iterations-niter for details."
+    },
+    {
+      "name": "Anisotropy",
+      "arg_name": "anisotropy",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Optional rescaling factor for Z (e.g. set to 2.0 if Z is sampled half as dense as X or Y). Only used if do_3D is True."
+    },
+    {
+      "name": "Channel axis",
+      "arg_name": "channel_axis",
+      "value": null,
+      "dtype": "int",
+      "tooltip": "Set the axis where channels are stored. 'None' means it tries to figure it out - useful if no/poor metadata and not loading properly."
+    },
+    {
+      "name": "Z axis",
+      "arg_name": "z_axis",
+      "value": null,
+      "dtype": "int",
+      "tooltip": "Set the axis where Z slices are stored. 'None' means it tries to figure it out - useful if no/poor metadata and not loading properly."
+    },
+    {
+      "name": "Batch size",
+      "arg_name": "batch_size",
+      "value": 64,
+      "tooltip": "Number of 224x224 patches to run simultaneously on the GPU. Can make smaller or bigger depending on GPU memory usage."
+    },
+    {
+      "name": "Minimum size",
+      "arg_name": "min_size",
+      "value": 15,
+      "tooltip": "Size (in pixels) of ROIs/to remove if lower. 0 will not remove any masks."
+    },
+    {
+      "name": "Max size fraction",
+      "arg_name": "max_size_fraction",
+      "value": 0.4,
+      "tooltip": "Maximum size of ROIs as fraction of image size. Masks larger than this are removed."
+    },
+    {
+      "name": "Tile Overlap",
+      "arg_name": "tile_overlap",
+      "value": 0.1,
+      "tooltip": "Fraction of overlap of tiles when computing flows."
+    }
+  ]
 }

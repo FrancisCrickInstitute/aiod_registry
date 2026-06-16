@@ -68,28 +68,44 @@
     "cyto3": {
       "tasks": {
         "cyto": {
-          "location": "https://www.cellpose.org/models/cyto3"
+          "locations": [
+            {
+              "location": "https://www.cellpose.org/models/cyto3"
+            }
+          ]
         }
       }
     },
     "nuclei": {
       "tasks": {
         "nuclei": {
-          "location": "https://www.cellpose.org/models/nucleitorch_0"
+          "locations": [
+            {
+              "location": "https://www.cellpose.org/models/nucleitorch_0"
+            }
+          ]
         }
       }
     },
     "cyto1": {
       "tasks": {
         "cyto": {
-          "location": "https://www.cellpose.org/models/cytotorch_0"
+          "locations": [
+            {
+              "location": "https://www.cellpose.org/models/cytotorch_0"
+            }
+          ]
         }
       }
     },
     "cyto2": {
       "tasks": {
         "cyto": {
-          "location": "https://www.cellpose.org/models/cyto2torch_0"
+          "locations": [
+            {
+              "location": "https://www.cellpose.org/models/cyto2torch_0"
+            }
+          ]
         }
       }
     }
@@ -104,7 +120,7 @@
     {
       "name": "Segment Channel",
       "arg_name": "segment_channel",
-      "value": 1,
+      "value": 0,
       "type": "channel",
       "channel_start": 0,
       "channel_start_label": "Grayscale",

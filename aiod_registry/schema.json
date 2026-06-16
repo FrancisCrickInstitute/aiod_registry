@@ -69,6 +69,34 @@
       "title": "Author",
       "type": "object"
     },
+    "LocationEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "description": "A URL or file path to the model artifact.",
+          "title": "Location",
+          "type": "string"
+        },
+        "config_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional path or URL to the config file paired with this location.",
+          "title": "Config Path"
+        }
+      },
+      "required": [
+        "location"
+      ],
+      "title": "LocationEntry",
+      "type": "object"
+    },
     "Metadata": {
       "additionalProperties": false,
       "properties": {
@@ -201,8 +229,29 @@
               "type": "null"
             }
           ],
-          "description": "Default parameter value. If a list, the parameters will be treated as dropdown choices, where the first is the default. The type of the first element will be used to determine the type of the parameter.",
+          "description": "Default parameter value. If a list, the parameters will be treated as dropdown choices. Use the `default` field on ModelParam to specify which item is selected by default (otherwise the first item is used). The type of the default (or first) element determines the parameter type.",
           "title": "Value"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
         },
         "tooltip": {
           "anyOf": [
@@ -271,6 +320,12 @@
             }
           ],
           "default": null
+        },
+        "slug": {
+          "default": "",
+          "description": "Filesystem-safe identifier derived from the version name (lowercase, spaces replaced with underscores). Auto-derived if not set.",
+          "title": "Slug",
+          "type": "string"
         }
       },
       "required": [
@@ -282,38 +337,14 @@
     "ModelVersionTask": {
       "additionalProperties": false,
       "properties": {
-        "location": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A url or a filepath, or list of alternative locations (skipped if location does not exist/cannot be read!)",
-          "title": "Location"
-        },
-        "config_path": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Config Path"
+        "locations": {
+          "description": "Ordered list of (location, config_path) pairs. The first accessible entry is used.",
+          "items": {
+            "$ref": "#/$defs/LocationEntry"
+          },
+          "minItems": 1,
+          "title": "Locations",
+          "type": "array"
         },
         "params": {
           "anyOf": [
@@ -343,7 +374,7 @@
         }
       },
       "required": [
-        "location"
+        "locations"
       ],
       "title": "ModelVersionTask",
       "type": "object"
@@ -424,16 +455,9 @@
       "type": "string"
     },
     "short_name": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "title": "Short Name"
+      "default": "",
+      "title": "Short Name",
+      "type": "string"
     },
     "versions": {
       "additionalProperties": {
