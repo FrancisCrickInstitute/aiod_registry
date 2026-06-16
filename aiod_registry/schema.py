@@ -87,7 +87,7 @@ class ModelParam(StrictModel):
     )
     tooltip: Optional[str] = None
     dtype: Optional[str] = None  # Used of default value is None
-    type: Optional[str] = None  # e.g. "channel" for image-aware channel selectors
+    param_type: Optional[str] = None  # e.g. "channel" for image-aware channel selectors
     channel_start: ChannelStart = -1
     channel_start_label: Annotated[
         str,
