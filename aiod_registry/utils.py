@@ -250,11 +250,12 @@ def _gen_configs_cli() -> None:
         prog="aiod-gen-configs",
         description="Generate default parameter config YAML files for all registered models.",
     )
+    default_output = str(Path(__file__).parent / "default_configs")
     parser.add_argument(
         "output_dir",
         nargs="?",
-        default="default_configs",
-        help="Directory to write configs into (default: ./default_configs).",
+        default=default_output,
+        help=f"Directory to write configs into (default: {default_output}).",
     )
     args = parser.parse_args()
     save_all_default_configs(output_dir=args.output_dir)
