@@ -1,4 +1,6 @@
 import json
+from importlib.resources import files
+from importlib.resources.abc import Traversable
 from pathlib import Path
 from typing import Optional, Union
 from urllib.parse import urlparse
@@ -8,9 +10,12 @@ import yaml
 from aiod_registry import ModelManifest
 
 
-def get_manifest_paths() -> list[Path]:
-    json_dir = Path(__file__).parent.parent / "aiod_registry" / "manifests"
-    return list(json_dir.glob("*.json"))
+def get_manifest_paths() -> list[Traversable]:
+    manifests_dir = files("aiod_registry") / "manifests"
+    return sorted(
+        (p for p in manifests_dir.iterdir() if p.name.endswith(".json")),
+        key=lambda p: p.name,
+    )
 
 
 def is_accessible(location: str | None) -> bool:
@@ -112,7 +117,9 @@ def load_manifests(
         paths = get_manifest_paths()
     manifests = {}
     for path in paths:
-        with open(path, "r") as f:
+        if isinstance(path, str):
+            path = Path(path)
+        with path.open("r") as f:
             json_manifest = json.load(f)
             manifest = ModelManifest(**json_manifest)
             manifests[manifest.short_name] = manifest
