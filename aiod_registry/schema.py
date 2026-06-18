@@ -1,9 +1,8 @@
 import builtins
 from pathlib import Path
-from typing import Optional, Union
+from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator, AnyUrl, PrivateAttr
-from typing_extensions import Annotated
+from pydantic import AnyUrl, BaseModel, ConfigDict, Field, PrivateAttr, model_validator
 
 TASK_NAMES = {
     "mito": "Mitochondria",
@@ -32,14 +31,14 @@ ParamName = Annotated[
     ),
 ]
 ParamValue = Annotated[
-    Union[str, int, float, bool, None, list[Union[str, int, float, bool]]],
+    str | int | float | bool | None | list[str | int | float | bool],
     Field(
         ...,
         description="Default parameter value. If a list, the parameters will be treated as dropdown choices. Use the `default` field on ModelParam to specify which item is selected by default (otherwise the first item is used). The type of the default (or first) element determines the parameter type.",
     ),
 ]
 Usage = Annotated[
-    Union[str, Path, AnyUrl],
+    str | Path | AnyUrl,
     Field(
         ...,
         title="Usage Guide",
@@ -68,11 +67,13 @@ class StrictModel(BaseModel):
 
 class ModelParam(StrictModel):
     name: ParamName
-    arg_name: Optional[str] = None
+    arg_name: str | None = None
     value: ParamValue
-    default: Optional[Union[str, int, float, bool]] = None  # Override default for list values
-    tooltip: Optional[str] = None
-    dtype: Optional[str] = None  # Used of default value is None
+    default: str | int | float | bool | None = (
+        None  # Override default for list values
+    )
+    tooltip: str | None = None
+    dtype: str | None = None  # Used of default value is None
     _dtype = None  # Determined from value if given
 
     @model_validator(mode="after")
@@ -120,10 +121,10 @@ class ModelParam(StrictModel):
 class Author(StrictModel):
     name: str
     affiliation: str
-    email: Optional[str] = None
-    url: Optional[AnyUrl] = None
-    github: Optional[str] = None
-    orcid: Optional[str] = None
+    email: str | None = None
+    url: AnyUrl | None = None
+    github: str | None = None
+    orcid: str | None = None
 
 
 class Publication(StrictModel):
@@ -136,9 +137,9 @@ class Publication(StrictModel):
         ),
     ]
     url: AnyUrl
-    year: Optional[int] = None
-    doi: Optional[str] = None
-    authors: Optional[list[Author]] = None
+    year: int | None = None
+    doi: str | None = None
+    authors: list[Author] | None = None
 
 
 class Metadata(StrictModel):
@@ -149,10 +150,10 @@ class Metadata(StrictModel):
             description="A short description of the model to provide context.",
         ),
     ]
-    authors: Optional[list[Author]] = None
-    pubs: Optional[list[Publication]] = None
-    url: Optional[AnyUrl] = None
-    repo: Optional[AnyUrl] = None
+    authors: list[Author] | None = None
+    pubs: list[Publication] | None = None
+    url: AnyUrl | None = None
+    repo: AnyUrl | None = None
 
     def __str__(self):
         misc_info = (
@@ -177,7 +178,7 @@ class Metadata(StrictModel):
 
 class LocationEntry(StrictModel):
     location: str = Field(..., description="A URL or file path to the model artifact.")
-    config_path: Optional[str] = Field(
+    config_path: str | None = Field(
         None,
         description="Optional path or URL to the config file paired with this location.",
     )
@@ -189,14 +190,14 @@ class ModelVersionTask(StrictModel):
         description="Ordered list of (location, config_path) pairs. The first accessible entry is used.",
         min_length=1,
     )
-    params: Optional[list[ModelParam]] = None
-    metadata: Optional[Metadata] = None
+    params: list[ModelParam] | None = None
+    metadata: Metadata | None = None
     _params_inherited: bool = PrivateAttr(default=False)
 
 
 class ModelVersion(StrictModel):
     tasks: dict[Task, ModelVersionTask]
-    metadata: Optional[Metadata] = None
+    metadata: Metadata | None = None
     slug: str = Field(
         default="",
         description="Filesystem-safe identifier derived from the version name (lowercase, spaces replaced with underscores). Auto-derived if not set.",
@@ -207,10 +208,10 @@ class ModelManifest(StrictModel):
     name: str = Field(..., min_length=1, max_length=50)
     short_name: str = ""
     versions: dict[ModelName, ModelVersion]
-    params: Optional[list[ModelParam]] = None
-    config: Optional[Path] = None
+    params: list[ModelParam] | None = None
+    config: Path | None = None
     metadata: Metadata
-    usage_guide: Optional[Usage] = None
+    usage_guide: Usage | None = None
 
     @model_validator(mode="after")
     def create_short_name(self):

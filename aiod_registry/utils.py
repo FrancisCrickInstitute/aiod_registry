@@ -2,7 +2,6 @@ import json
 from importlib.resources import files
 from importlib.resources.abc import Traversable
 from pathlib import Path
-from typing import Optional, Union
 from urllib.parse import urlparse
 
 import yaml
@@ -58,7 +57,9 @@ def flatten_manifest(manifest: ModelManifest) -> ModelManifest:
     # Keep only the first (location, config_path) pair for each task
     for v_name, version in manifest.versions.items():
         for task_name, task in version.tasks.items():
-            new_manifest.versions[v_name].tasks[task_name].locations = [task.locations[0]]
+            new_manifest.versions[v_name].tasks[task_name].locations = [
+                task.locations[0]
+            ]
     return new_manifest
 
 
@@ -104,13 +105,13 @@ def filter_empty_manifests(
     # Remove the empty manifests
     return {
         manifest.short_name: manifest
-        for manifest, remove in zip(manifests.values(), remove)
+        for manifest, remove in zip(manifests.values(), remove, strict=True)
         if not remove
     }
 
 
 def load_manifests(
-    paths: Optional[list[Union[Path, str]]] = None,
+    paths: list[Path | str] | None = None,
     filter_access: bool = False,
 ) -> dict[str, ModelManifest]:
     if paths is None:
@@ -195,8 +196,8 @@ def generate_default_config(manifest: ModelManifest, version: str, task: str) ->
 
 
 def save_all_default_configs(
-    output_dir: Union[Path, str] = "default_configs",
-    paths: Optional[list[Union[Path, str]]] = None,
+    output_dir: Path | str = "default_configs",
+    paths: list[Path | str] | None = None,
 ) -> None:
     """Generate and save default parameter config YAML files for all models.
 
