@@ -12,14 +12,35 @@ dependencies = [
     "pydantic >= 2.0",
     "pyyaml",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.13"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 dynamic = ["readme", "version"]
+
+[project.urls]
+homepage = "https://github.com/FrancisCrickInstitute/aiod_registry"
+documentation = "https://franciscrickinstitute.github.io/aiod_docs/sections/model_registry/"
+source = "https://github.com/FrancisCrickInstitute/aiod_registry"
 
 [project.optional-dependencies]
 dev = [
     "pytest",
     "pytest-cov",
 ]
+
+[dependency-groups]
+dev = ["pytest", "pytest-cov"]
 
 [project.scripts]
 aiod-gen-configs = "aiod_registry.utils:_gen_configs_cli"
@@ -33,6 +54,11 @@ source = "vcs"
 
 [tool.hatch.build.targets.wheel]
 packages = ["aiod_registry"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".github"
+]
 
 [tool.pytest.ini_options]
 addopts = "--cov=aiod_registry --cov-report=term-missing"
