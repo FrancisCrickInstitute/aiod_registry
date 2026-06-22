@@ -121,13 +121,19 @@
       "name": "Segment Channel",
       "arg_name": "segment_channel",
       "value": 0,
-      "tooltip": "What channel to segment on. 0=grayscale, 1=red, 2=green, 3=blue. See https://cellpose.readthedocs.io/en/v3.1.1.1/settings.html#channels for details."
+      "param_type": "channel",
+      "channel_start": 0,
+      "channel_start_label": "Grayscale",
+      "tooltip": "What channel to segment on. Cellpose channel convention: 0=grayscale (no specific channel), 1=first image channel, 2=second image channel, etc. See https://cellpose.readthedocs.io/en/v3.1.1.1/settings.html#channels for details."
     },
     {
       "name": "Nucleus Channel",
       "arg_name": "nucleus_channel",
       "value": 0,
-      "tooltip": "What channel contains nucleus. 0=grayscale, 1=red, 2=green, 3=blue. Unused for 'nuclei' model, where nuclei are in the segment channel. See https://cellpose.readthedocs.io/en/v3.1.1.1/settings.html#channels for details."
+      "param_type": "channel",
+      "channel_start": 0,
+      "channel_start_label": "No nucleus channel",
+      "tooltip": "What channel contains the nucleus. Cellpose channel convention: 0=no nucleus channel (grayscale), 1=first image channel, 2=second image channel, etc. Unused for the 'nuclei' model (nucleus is already the segment channel). See https://cellpose.readthedocs.io/en/v3.1.1.1/settings.html#channels for details."
     },
     {
       "name": "3D Segmentation",

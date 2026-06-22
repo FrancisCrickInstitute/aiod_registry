@@ -1,8 +1,16 @@
 import builtins
 from pathlib import Path
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator, AnyUrl, PrivateAttr
+from pydantic import (
+    AfterValidator,
+    AnyUrl,
+    BaseModel,
+    ConfigDict,
+    Field,
+    PrivateAttr,
+    model_validator,
+)
 from typing_extensions import Annotated
 
 TASK_NAMES = {
@@ -48,6 +56,26 @@ Usage = Annotated[
 ]
 
 
+def _validate_axes(v: str) -> str:
+    if len(set(v)) != len(v):
+        raise ValueError("Axes must not contain repeated characters.")
+    if "Y" not in v or "X" not in v:
+        raise ValueError("Axes must contain at least Y and X.")
+    return v
+
+
+Axes = Annotated[
+    str,
+    Field(
+        ...,
+        min_length=2,
+        pattern=r"^[TCZYX]+$",
+        description="Axes specification for the model (e.g., 'YX' for 2D, 'ZYX' for 3D, 'CZYX' with channels). Must contain at least Y and X, with no repeated letters. Valid characters: T, C, Z, Y, X.",
+    ),
+    AfterValidator(_validate_axes),
+]
+
+
 def print_attr(attr, br: bool = True):
     "Shorthand to print something in brackets or not, only if not None."
     if attr is None:
@@ -66,13 +94,37 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+ChannelStart = Annotated[
+    Literal[-1, 0],
+    Field(
+        description=(
+            "Lowest integer value shown in the channel dropdown. "
+            "-1 means the first item is 'original image as-is' and image channels are 0-based. "
+            "0 means the first item is model-specific and image channels are 1-based."
+        ),
+    ),
+]
+
+
 class ModelParam(StrictModel):
     name: ParamName
     arg_name: Optional[str] = None
     value: ParamValue
-    default: Optional[Union[str, int, float, bool]] = None  # Override default for list values
+    default: Optional[Union[str, int, float, bool]] = (
+        None  # Override default for list values
+    )
     tooltip: Optional[str] = None
     dtype: Optional[str] = None  # Used of default value is None
+    param_type: Optional[str] = None  # e.g. "channel" for image-aware channel selectors
+    channel_start: ChannelStart = -1
+    channel_start_label: Annotated[
+        str,
+        Field(
+            min_length=1,
+            description="Label for the first channel dropdown item.",
+            examples=["original", "Grayscale", "No nucleus channel"],
+        ),
+    ] = "original"
     _dtype = None  # Determined from value if given
 
     @model_validator(mode="after")
@@ -114,6 +166,16 @@ class ModelParam(StrictModel):
                     )
         else:
             self.dtype = self._dtype
+        return self
+
+    @model_validator(mode="after")
+    def validate_channel_config(self):
+        if self.param_type != "channel":
+            if self.channel_start != -1 or self.channel_start_label != "original":
+                raise ValueError(
+                    "`channel_start` and `channel_start_label` can only be customized "
+                    'when `type` is "channel".'
+                )
         return self
 
 
@@ -195,6 +257,7 @@ class ModelVersionTask(StrictModel):
 
 
 class ModelVersion(StrictModel):
+    axes: Optional[Axes] = None
     tasks: dict[Task, ModelVersionTask]
     metadata: Optional[Metadata] = None
     slug: str = Field(

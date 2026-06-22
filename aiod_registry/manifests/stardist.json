@@ -1,0 +1,202 @@
+{
+  "name": "StarDist",
+  "short_name": "stardist",
+  "metadata": {
+    "description": "StarDist is a deep learning method for star-convex object detection in 2D and 3D microscopy images, particularly suited for cell and nucleus segmentation.",
+    "url": "https://github.com/stardist/stardist",
+    "repo": "https://github.com/stardist/stardist",
+    "pubs": [
+      {
+        "info": "StarDist 2D",
+        "url": "https://arxiv.org/abs/1806.03535",
+        "title": "Cell Detection with Star-convex Polygons",
+        "doi": "10.1007/978-3-030-00934-2_30",
+        "authors": [
+          {
+            "name": "Uwe Schmidt",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics, Dresden, Germany; Center for Systems Biology Dresden, Germany",
+            "email": "research@uweschmidt.org"
+          },
+          {
+            "name": "Martin Weigert",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics, Dresden, Germany; Center for Systems Biology Dresden, Germany",
+            "email": "martin.weigert@epfl.ch"
+          },
+          {
+            "name": "Coleman Broaddus",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics, Dresden, Germany; Center for Systems Biology Dresden, Germany"
+          },
+          {
+            "name": "Gene Myers",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics, Dresden, Germany; Center for Systems Biology Dresden, Germany; Faculty of Computer Science, Technical University Dresden, Germany"
+          }
+        ]
+      },
+      {
+        "info": "StarDist 3D",
+        "url": "http://openaccess.thecvf.com/content_WACV_2020/papers/Weigert_Star-convex_Polyhedra_for_3D_Object_Detection_and_Segmentation_in_Microscopy_WACV_2020_paper.pdf",
+        "title": "Star-convex Polyhedra for 3D Object Detection and Segmentation in Microscopy",
+        "doi": "10.1109/WACV45572.2020.9093435",
+        "authors": [
+          {
+            "name": "Martin Weigert",
+            "affiliation": "Institute of Bioengineering, École Polytechnique Fédérale de Lausanne (EPFL), Switzerland; Max Planck Institute of Molecular Cell Biology and Genetics (MPI-CBG), Dresden, Germany; Center for Systems Biology Dresden (CSBD), Germany"
+          },
+          {
+            "name": "Uwe Schmidt",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics (MPI-CBG), Dresden, Germany; Center for Systems Biology Dresden (CSBD), Germany"
+          },
+          {
+            "name": "Robert Haase",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics (MPI-CBG), Dresden, Germany; Center for Systems Biology Dresden (CSBD), Germany"
+          },
+          {
+            "name": "Ko Sugawara",
+            "affiliation": "Institut de Génomique Fonctionnelle de Lyon (IGFL), École Normale Supérieure de Lyon, France; Centre National de la Recherche Scientifique (CNRS), Paris, France"
+          },
+          {
+            "name": "Gene Myers",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics (MPI-CBG), Dresden, Germany; Center for Systems Biology Dresden (CSBD), Germany"
+          }
+        ]
+      },
+      {
+        "info": "StarDist Histopathology",
+        "url": "https://arxiv.org/abs/2203.02284",
+        "title": "Nuclei Instance Segmentation and Classification in Histopathology Images with Stardist",
+        "doi": "10.48550/arXiv.2203.02284",
+        "authors": [
+          {
+            "name": "Martin Weigert",
+            "affiliation": "École Polytechnique Fédérale de Lausanne (EPFL), Lausanne, Switzerland"
+          },
+          {
+            "name": "Uwe Schmidt",
+            "affiliation": "Max Planck Institute of Molecular Cell Biology and Genetics (MPI-CBG), Dresden, Germany"
+          }
+        ]
+      }
+    ]
+  },
+  "versions": {
+    "2D_versatile_fluo": {
+      "axes": "YX",
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/stardist/stardist-models/releases/download/v0.1/python_2D_versatile_fluo.zip"
+            }
+          ]
+        }
+      }
+    },
+    "2D_versatile_he": {
+      "axes": "YX",
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/stardist/stardist-models/releases/download/v0.1/python_2D_versatile_he.zip"
+            }
+          ]
+        }
+      }
+    },
+    "2D_paper_dsb2018": {
+      "axes": "YX",
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/stardist/stardist-models/releases/download/v0.1/python_2D_paper_dsb2018.zip"
+            }
+          ]
+        }
+      }
+    },
+    "2D_demo": {
+      "axes": "YX",
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/stardist/stardist-models/releases/download/v0.1/python_2D_demo.zip"
+            }
+          ]
+        }
+      }
+    },
+    "3D_demo": {
+      "axes": "ZYX",
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/stardist/stardist-models/releases/download/v0.1/python_3D_demo.zip"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "Probability Threshold",
+      "arg_name": "prob_thresh",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Threshold for pixel-wise object probability mask. Higher values lead to fewer detected objects with higher confidence."
+    },
+    {
+      "name": "NMS Threshold",
+      "arg_name": "nms_thresh",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Intersection over Union (IoU) threshold for non-maximum suppression. Higher values allow for more overlapping objects."
+    },
+    {
+      "name": "Normalize Min Percentile",
+      "arg_name": "normalize_pmin",
+      "value": 1,
+      "dtype": "float",
+      "tooltip": "Lower percentile for image normalization. Images are normalized to this percentile value before prediction."
+    },
+    {
+      "name": "Normalize Max Percentile",
+      "arg_name": "normalize_pmax",
+      "value": 99.8,
+      "dtype": "float",
+      "tooltip": "Upper percentile for image normalization. Images are normalized to this percentile value before prediction."
+    },
+    {
+      "name": "Number of Tiles",
+      "arg_name": "n_tiles",
+      "value": null,
+      "dtype": "tuple",
+      "tooltip": "Number of tiles for tiled prediction to reduce memory consumption for large images. Specify as tuple (e.g., (2, 2) for 2x2 tiling)."
+    },
+    {
+      "name": "Normalize Image",
+      "arg_name": "normalize_img",
+      "value": true,
+      "tooltip": "Whether to normalize the input image before prediction. Recommended for most cases."
+    },
+    {
+      "name": "Scale",
+      "arg_name": "scale",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Optional scaling factor for the input image. Can be used to match the resolution of training data."
+    },
+    {
+      "name": "Channel Index",
+      "arg_name": "channel_idx",
+      "value": 0,
+      "param_type": "channel",
+      "channel_start": -1,
+      "channel_start_label": "Don't select channel",
+      "tooltip": "Select which channel StarDist should use. -1=use original image as-is, 0=first channel, 1=second channel, etc. Ignored for model variants that consume multi-channel images directly."
+    }
+  ]
+}
