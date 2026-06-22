@@ -97,6 +97,7 @@
   },
   "versions": {
     "generic_confocal_3D_unet": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -108,6 +109,7 @@
       }
     },
     "generic_light_sheet_3D_unet": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -119,6 +121,7 @@
       }
     },
     "confocal_3D_unet_ovules_ds1x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -130,6 +133,7 @@
       }
     },
     "confocal_3D_unet_ovules_ds2x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -141,6 +145,7 @@
       }
     },
     "confocal_3D_unet_ovules_ds3x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -152,6 +157,7 @@
       }
     },
     "confocal_2D_unet_ovules_ds2x": {
+      "axes": "YX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -163,6 +169,7 @@
       }
     },
     "lightsheet_3D_unet_root_ds1x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -174,6 +181,7 @@
       }
     },
     "lightsheet_3D_unet_root_ds2x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -185,6 +193,7 @@
       }
     },
     "lightsheet_3D_unet_root_ds3x": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -196,6 +205,7 @@
       }
     },
     "lightsheet_2D_unet_root_ds1x": {
+      "axes": "YX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -207,6 +217,7 @@
       }
     },
     "lightsheet_3D_unet_root_nuclei_ds1x": {
+      "axes": "ZYX",
       "tasks": {
         "nuclei": {
           "locations": [
@@ -218,6 +229,7 @@
       }
     },
     "lightsheet_2D_unet_root_nuclei_ds1x": {
+      "axes": "YX",
       "tasks": {
         "nuclei": {
           "locations": [
@@ -229,6 +241,7 @@
       }
     },
     "confocal_2D_unet_sa_meristem_cells": {
+      "axes": "YX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -240,6 +253,7 @@
       }
     },
     "confocal_3D_unet_sa_meristem_cells": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -251,6 +265,7 @@
       }
     },
     "lightsheet_3D_unet_mouse_embryo_cells": {
+      "axes": "ZYX",
       "tasks": {
         "boundaries": {
           "locations": [
@@ -262,6 +277,7 @@
       }
     },
     "confocal_3D_unet_mouse_embryo_nuclei": {
+      "axes": "ZYX",
       "tasks": {
         "nuclei": {
           "locations": [
@@ -273,6 +289,7 @@
       }
     },
     "PlantSeg_3Dnuc_platinum": {
+      "axes": "ZYX",
       "tasks": {
         "nuclei": {
           "locations": [

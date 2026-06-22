@@ -4,9 +4,7 @@ import sys
 
 import pytest
 import yaml
-from pydantic import ValidationError
-
-from aiod_registry.schema import ModelManifest, ModelParam
+from aiod_registry.schema import ModelManifest, ModelParam, ModelVersion
 from aiod_registry.utils import (
     filter_empty_manifests,
     filter_location,
@@ -15,8 +13,8 @@ from aiod_registry.utils import (
     is_accessible,
     load_manifests,
     save_all_default_configs,
-    _params_to_yaml,
 )
+from pydantic import ValidationError
 
 # Example manifest data (based on cellpose.json)
 EXAMPLE_MANIFEST = {
@@ -52,7 +50,9 @@ EXAMPLE_MANIFEST = {
                 }
             }
         },
-        "cyto2": {"tasks": {"cyto": {"locations": [{"location": "file:///nonexistent/path"}]}}},
+        "cyto2": {
+            "tasks": {"cyto": {"locations": [{"location": "file:///nonexistent/path"}]}}
+        },
     },
     "params": [
         {
@@ -124,8 +124,14 @@ def test_filter_location_preserves_paired_config_path():
                 "tasks": {
                     "mito": {
                         "locations": [
-                            {"location": "file:///nonexistent/path", "config_path": "file:///nonexistent/cfg1.yml"},
-                            {"location": "https://example.com/model", "config_path": "/nonexistent/cfg2.yml"},
+                            {
+                                "location": "file:///nonexistent/path",
+                                "config_path": "file:///nonexistent/cfg1.yml",
+                            },
+                            {
+                                "location": "https://example.com/model",
+                                "config_path": "/nonexistent/cfg2.yml",
+                            },
                         ]
                     }
                 }
@@ -143,13 +149,12 @@ def test_filter_location_preserves_paired_config_path():
 
 def test_empty_locations_raises():
     from pydantic import ValidationError
+
     manifest_data = {
         "name": "Bad Model",
         "short_name": "bad_model",
         "metadata": {"description": "Test"},
-        "versions": {
-            "v1": {"tasks": {"cyto": {"locations": []}}}
-        },
+        "versions": {"v1": {"tasks": {"cyto": {"locations": []}}}},
     }
     with pytest.raises(ValidationError):
         ModelManifest(**manifest_data)
@@ -247,7 +252,9 @@ class TestModelParamDefault:
 
     def test_list_default_non_first_item(self):
         """Setting `default` to a non-first list item is accepted and reflected in _dtype."""
-        p = ModelParam(name="mode", value=["fast", "slow", "accurate"], default="accurate")
+        p = ModelParam(
+            name="mode", value=["fast", "slow", "accurate"], default="accurate"
+        )
         assert p.default == "accurate"
         assert p._dtype is str
 
@@ -392,7 +399,9 @@ def test_save_all_default_configs_valid_yaml_with_header(tmp_path):
     content = config_file.read_text()
     assert content.startswith("# Auto-generated")
     # Strip header comment before parsing
-    config = yaml.safe_load("\n".join(line for line in content.splitlines() if not line.startswith("#")))
+    config = yaml.safe_load(
+        "\n".join(line for line in content.splitlines() if not line.startswith("#"))
+    )
     assert isinstance(config, dict) and len(config) > 0
 
 
@@ -418,7 +427,11 @@ def test_short_name_auto_derived_from_name():
         "name": "My Cool Model",
         "metadata": {"description": "Test"},
         "versions": {
-            "v1": {"tasks": {"cyto": {"locations": [{"location": "https://example.com/model"}]}}}
+            "v1": {
+                "tasks": {
+                    "cyto": {"locations": [{"location": "https://example.com/model"}]}
+                }
+            }
         },
     }
     manifest = ModelManifest(**manifest_data)
@@ -436,7 +449,9 @@ def test_params_inherited_flag_task_level():
                 "tasks": {
                     "cyto": {
                         "locations": [{"location": "https://example.com/model"}],
-                        "params": [{"name": "Threshold", "arg_name": "threshold", "value": 0.5}],
+                        "params": [
+                            {"name": "Threshold", "arg_name": "threshold", "value": 0.5}
+                        ],
                     }
                 }
             }
@@ -459,7 +474,9 @@ def test_save_all_default_configs_task_specific_file(tmp_path):
                 "tasks": {
                     "cyto": {
                         "locations": [{"location": "https://example.com/model"}],
-                        "params": [{"name": "Threshold", "arg_name": "threshold", "value": 0.5}],
+                        "params": [
+                            {"name": "Threshold", "arg_name": "threshold", "value": 0.5}
+                        ],
                     }
                 }
             }
@@ -471,3 +488,50 @@ def test_save_all_default_configs_task_specific_file(tmp_path):
     save_all_default_configs(output_dir=out, paths=[manifest_file])
     assert (out / "task_only_v1_cyto.yaml").exists()
     assert not (out / "task_only.yaml").exists()
+
+
+# ---------------------------------------------------------------------------
+# Axes field validation
+# ---------------------------------------------------------------------------
+
+_AXES_TASK = {"locations": [{"location": "https://example.com/model"}]}
+
+
+def _make_version(axes):
+    return ModelVersion(axes=axes, tasks={"nuclei": _AXES_TASK})
+
+
+class TestAxes:
+    @pytest.mark.parametrize("axes", ["YX", "XY", "ZYX", "CZYX", "TCZYX", "TYX"])
+    def test_valid(self, axes):
+        v = _make_version(axes)
+        assert v.axes == axes
+
+    def test_none_allowed(self):
+        """axes is optional; None should be accepted."""
+        v = _make_version(None)
+        assert v.axes is None
+
+    @pytest.mark.parametrize(
+        "axes",
+        [
+            "Y",  # missing X
+            "X",  # missing Y
+            "ZY",  # missing X
+            "ZX",  # missing Y
+            "",  # empty
+        ],
+    )
+    def test_missing_required_axis_raises(self, axes):
+        with pytest.raises(ValidationError):
+            _make_version(axes)
+
+    @pytest.mark.parametrize("axes", ["YYX", "ZYX X", "CZZYYX"])
+    def test_repeated_letters_raises(self, axes):
+        with pytest.raises(ValidationError):
+            _make_version(axes)
+
+    @pytest.mark.parametrize("axes", ["yxz", "Zyx", "RGB", "HWC", "BCZYX"])
+    def test_invalid_characters_raises(self, axes):
+        with pytest.raises(ValidationError):
+            _make_version(axes)

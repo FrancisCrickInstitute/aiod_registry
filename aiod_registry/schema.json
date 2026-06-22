@@ -288,6 +288,19 @@
     "ModelVersion": {
       "additionalProperties": false,
       "properties": {
+        "axes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Axes specification for the model (e.g., 'YX' for 2D, 'ZYX' for 3D, 'YXC' or 'CZYX' with channels)",
+          "title": "Axes"
+        },
         "tasks": {
           "patternProperties": {
             "^(?i:mito|er|ne|everything|nuclei|cyto|drop|boundaries)$": {
