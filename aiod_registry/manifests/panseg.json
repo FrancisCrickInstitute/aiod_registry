@@ -1,15 +1,15 @@
 {
-  "name": "PlantSeg 2",
-  "short_name": "plantseg2",
+  "name": "PanSeg",
+  "short_name": "panseg",
   "metadata": {
-    "description": "PlantSeg 2.0: Advanced Interactive User-Friendly Tissue Segmentation",
-    "url": "https://kreshuklab.github.io/plant-seg/",
-    "repo": "https://github.com/kreshuklab/plant-seg",
+    "description": "PanSeg: Advanced Interactive User-Friendly Tissue Segmentation",
+    "url": "https://kreshuklab.github.io/panseg/",
+    "repo": "https://github.com/kreshuklab/panseg",
     "pubs": [
       {
-        "info": "PlantSeg v2",
-        "url": "https://kreshuklab.github.io/plant-seg/",
-        "title": "PlantSeg 2.0: Advanced Interactive User-Friendly Tissue Segmentation",
+        "info": "PanSeg",
+        "url": "https://kreshuklab.github.io/panseg/",
+        "title": "PanSeg: Advanced Interactive User-Friendly Tissue Segmentation",
         "authors": [
           {
             "name": "Qin Yu",
