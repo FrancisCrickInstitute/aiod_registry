@@ -106,7 +106,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "generic_confocal_3D_unet"
     },
     "generic_light_sheet_3D_unet": {
       "axes": "ZYX",
@@ -118,7 +119,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "generic_light_sheet_3D_unet"
     },
     "confocal_3D_unet_ovules_ds1x": {
       "axes": "ZYX",
@@ -130,7 +132,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_3D_unet_ovules_ds1x"
     },
     "confocal_3D_unet_ovules_ds2x": {
       "axes": "ZYX",
@@ -142,7 +145,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_3D_unet_ovules_ds2x"
     },
     "confocal_3D_unet_ovules_ds3x": {
       "axes": "ZYX",
@@ -154,7 +158,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_3D_unet_ovules_ds3x"
     },
     "confocal_2D_unet_ovules_ds2x": {
       "axes": "YX",
@@ -166,7 +171,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_2D_unet_ovules_ds2x"
     },
     "lightsheet_3D_unet_root_ds1x": {
       "axes": "ZYX",
@@ -178,7 +184,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_3D_unet_root_ds1x"
     },
     "lightsheet_3D_unet_root_ds2x": {
       "axes": "ZYX",
@@ -190,7 +197,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_3D_unet_root_ds2x"
     },
     "lightsheet_3D_unet_root_ds3x": {
       "axes": "ZYX",
@@ -202,7 +210,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_3D_unet_root_ds3x"
     },
     "lightsheet_2D_unet_root_ds1x": {
       "axes": "YX",
@@ -214,7 +223,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_2D_unet_root_ds1x"
     },
     "lightsheet_3D_unet_root_nuclei_ds1x": {
       "axes": "ZYX",
@@ -226,7 +236,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_3D_unet_root_nuclei_ds1x"
     },
     "lightsheet_2D_unet_root_nuclei_ds1x": {
       "axes": "YX",
@@ -238,7 +249,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_2D_unet_root_nuclei_ds1x"
     },
     "confocal_2D_unet_sa_meristem_cells": {
       "axes": "YX",
@@ -250,7 +262,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_2D_unet_sa_meristem_cells"
     },
     "confocal_3D_unet_sa_meristem_cells": {
       "axes": "ZYX",
@@ -262,7 +275,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_3D_unet_sa_meristem_cells"
     },
     "lightsheet_3D_unet_mouse_embryo_cells": {
       "axes": "ZYX",
@@ -274,7 +288,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "lightsheet_3D_unet_mouse_embryo_cells"
     },
     "confocal_3D_unet_mouse_embryo_nuclei": {
       "axes": "ZYX",
@@ -286,7 +301,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "confocal_3D_unet_mouse_embryo_nuclei"
     },
     "PlantSeg_3Dnuc_platinum": {
       "axes": "ZYX",
@@ -298,7 +314,8 @@
             }
           ]
         }
-      }
+      },
+      "slug": "PlantSeg_3Dnuc_platinum"
     }
   },
   "params": [
