@@ -116,9 +116,9 @@ def load_manifests(
     filter_access: bool = False,
 ) -> dict[str, ModelManifest]:
     if paths is None:
-        paths = get_manifest_paths() # type: ignore
+        paths = get_manifest_paths()  # type: ignore
     manifests = {}
-    for path in paths: # type: ignore
+    for path in paths:  # type: ignore
         if isinstance(path, str):
             path = Path(path)
         with path.open("r") as f:
