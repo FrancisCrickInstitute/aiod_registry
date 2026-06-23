@@ -111,7 +111,7 @@ class ModelParam(StrictModel):
     value: ParamValue
     default: str | int | float | bool | None = None  # Override default for list values
     tooltip: str | None = None
-    dtype: str | None = None  # Used of default value is None
+    dtype: str | None = None  # Used if default value is None
     param_type: str | None = None  # e.g. "channel" for image-aware channel selectors
     channel_start: ChannelStart = -1
     channel_start_label: Annotated[
