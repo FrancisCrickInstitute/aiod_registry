@@ -93,7 +93,7 @@ jobs:
       - name: Dispatch version-bump event to ${{ matrix.repo }}
         env:
           GH_TOKEN: ${{ secrets.CROSS_REPO_PAT }}
-          PACKAGE: aiod_registry
+          PACKAGE: aiod-registry
           VERSION: ${{ needs.build.outputs.version }}
           REPO: ${{ matrix.repo }}
         run: |
