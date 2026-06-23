@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 import yaml
 
-from aiod_registry import ModelManifest
+from aiod_registry.schema import ModelManifest
 
 
 def get_manifest_paths() -> list[Traversable]:
@@ -112,13 +112,13 @@ def filter_empty_manifests(
 
 
 def load_manifests(
-    paths: list[Path | str] | None = None,
+    paths: list[Path | str | Traversable] | None = None,
     filter_access: bool = False,
 ) -> dict[str, ModelManifest]:
     if paths is None:
-        paths = get_manifest_paths()
+        paths = get_manifest_paths() # type: ignore
     manifests = {}
-    for path in paths:
+    for path in paths: # type: ignore
         if isinstance(path, str):
             path = Path(path)
         with path.open("r") as f:
@@ -198,7 +198,7 @@ def generate_default_config(manifest: ModelManifest, version: str, task: str) ->
 
 def save_all_default_configs(
     output_dir: Path | str = "default_configs",
-    paths: list[Path | str] | None = None,
+    paths: list[Path | str | Traversable] | None = None,
 ) -> None:
     """Generate and save default parameter config YAML files for all models.
 
