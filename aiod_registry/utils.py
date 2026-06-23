@@ -1,4 +1,5 @@
 import json
+import os
 from importlib.resources import files
 from importlib.resources.abc import Traversable
 from pathlib import Path
@@ -251,7 +252,10 @@ def _gen_configs_cli() -> None:
         prog="aiod-gen-configs",
         description="Generate default parameter config YAML files for all registered models.",
     )
-    default_output = str(Path(__file__).parent / "default_configs")
+    default_output_path = Path(__file__).parent / "default_configs"
+    if not os.access(default_output_path.parent, os.W_OK):
+        default_output_path = Path("default_configs")
+    default_output = str(default_output_path)
     parser.add_argument(
         "output_dir",
         nargs="?",
