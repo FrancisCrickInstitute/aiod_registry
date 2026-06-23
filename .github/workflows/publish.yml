@@ -1,0 +1,103 @@
+# Trigger: push a tag matching v*, e.g. `git tag v1.2.3 && git push --tags`
+# Needs CROSS_REPO_PAT configured
+#   Fine-grained PAT with Contents+PRs read/write on Segment-Flow
+
+
+name: Publish & notify downstream
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0       # required for hatch-vcs to read git tags
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install hatch
+        run: uv tool install hatch
+
+      - name: Build wheel and sdist
+        run: hatch build
+
+      - name: Extract version from hatch
+        id: extract
+        run: |
+          VERSION="$(hatch version)"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing version: $VERSION"
+
+      - name: Smoke test (wheel)
+        run: |
+          uv run --isolated --no-project \
+            --with "$(ls dist/*.whl)" \
+            python tests/smoke_test.py
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/aiod-registry
+    permissions:
+      contents: read
+      id-token: write  # required for OIDC trusted publishing
+    steps:
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  notify-downstream:
+    needs: [build, publish-pypi]
+    runs-on: ubuntu-latest
+    strategy:
+      # A dispatch failure to one repo does not cancel the others
+      fail-fast: false
+      matrix:
+        repo:
+          - FrancisCrickInstitute/Segment-Flow
+
+    steps:
+      - name: Dispatch version-bump event to ${{ matrix.repo }}
+        env:
+          GH_TOKEN: ${{ secrets.CROSS_REPO_PAT }}
+          PACKAGE: aiod_registry
+          VERSION: ${{ needs.build.outputs.version }}
+          REPO: ${{ matrix.repo }}
+        run: |
+          gh api \
+            --method POST \
+            repos/${REPO}/dispatches \
+            --field event_type=package-version-bump \
+            --field client_payload[package]="${PACKAGE}" \
+            --field client_payload[version]="${VERSION}" \
+            --field client_payload[source_repo]="${GITHUB_REPOSITORY}" \
+            --field client_payload[source_tag]="${GITHUB_REF_NAME}"
