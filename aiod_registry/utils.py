@@ -1,16 +1,21 @@
 import json
+import os
+from importlib.resources import files
+from importlib.resources.abc import Traversable
 from pathlib import Path
-from typing import Optional, Union
 from urllib.parse import urlparse
 
 import yaml
 
-from aiod_registry import ModelManifest
+from aiod_registry.schema import ModelManifest
 
 
-def get_manifest_paths() -> list[Path]:
-    json_dir = Path(__file__).parent.parent / "aiod_registry" / "manifests"
-    return list(json_dir.glob("*.json"))
+def get_manifest_paths() -> list[Traversable]:
+    manifests_dir = files("aiod_registry") / "manifests"
+    return sorted(
+        (p for p in manifests_dir.iterdir() if p.name.endswith(".json")),
+        key=lambda p: p.name,
+    )
 
 
 def is_accessible(location: str | None) -> bool:
@@ -53,7 +58,9 @@ def flatten_manifest(manifest: ModelManifest) -> ModelManifest:
     # Keep only the first (location, config_path) pair for each task
     for v_name, version in manifest.versions.items():
         for task_name, task in version.tasks.items():
-            new_manifest.versions[v_name].tasks[task_name].locations = [task.locations[0]]
+            new_manifest.versions[v_name].tasks[task_name].locations = [
+                task.locations[0]
+            ]
     return new_manifest
 
 
@@ -99,20 +106,22 @@ def filter_empty_manifests(
     # Remove the empty manifests
     return {
         manifest.short_name: manifest
-        for manifest, remove in zip(manifests.values(), remove)
+        for manifest, remove in zip(manifests.values(), remove, strict=True)
         if not remove
     }
 
 
 def load_manifests(
-    paths: Optional[list[Union[Path, str]]] = None,
+    paths: list[Path | str | Traversable] | None = None,
     filter_access: bool = False,
 ) -> dict[str, ModelManifest]:
     if paths is None:
-        paths = get_manifest_paths()
+        paths = get_manifest_paths()  # type: ignore
     manifests = {}
-    for path in paths:
-        with open(path, "r") as f:
+    for path in paths:  # type: ignore
+        if isinstance(path, str):
+            path = Path(path)
+        with path.open("r") as f:
             json_manifest = json.load(f)
             manifest = ModelManifest(**json_manifest)
             manifests[manifest.short_name] = manifest
@@ -188,8 +197,8 @@ def generate_default_config(manifest: ModelManifest, version: str, task: str) ->
 
 
 def save_all_default_configs(
-    output_dir: Union[Path, str] = "default_configs",
-    paths: Optional[list[Union[Path, str]]] = None,
+    output_dir: Path | str = "default_configs",
+    paths: list[Path | str | Traversable] | None = None,
 ) -> None:
     """Generate and save default parameter config YAML files for all models.
 
@@ -243,11 +252,15 @@ def _gen_configs_cli() -> None:
         prog="aiod-gen-configs",
         description="Generate default parameter config YAML files for all registered models.",
     )
+    default_output_path = Path(__file__).parent / "default_configs"
+    if not os.access(default_output_path.parent, os.W_OK):
+        default_output_path = Path("default_configs")
+    default_output = str(default_output_path)
     parser.add_argument(
         "output_dir",
         nargs="?",
-        default="default_configs",
-        help="Directory to write configs into (default: ./default_configs).",
+        default=default_output,
+        help=f"Directory to write configs into (default: {default_output}).",
     )
     args = parser.parse_args()
     save_all_default_configs(output_dir=args.output_dir)

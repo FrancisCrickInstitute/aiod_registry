@@ -55,3 +55,8 @@ cover/
 docs/_build/
 
 .DS_Store
+.vscode/
+.idea/
+venv/
+**/_version.py
+/.gitignore

@@ -4,6 +4,8 @@ import sys
 
 import pytest
 import yaml
+from pydantic import ValidationError
+
 from aiod_registry.schema import ModelManifest, ModelParam, ModelVersion
 from aiod_registry.utils import (
     filter_empty_manifests,
@@ -14,7 +16,6 @@ from aiod_registry.utils import (
     load_manifests,
     save_all_default_configs,
 )
-from pydantic import ValidationError
 
 # Example manifest data (based on cellpose.json)
 EXAMPLE_MANIFEST = {
@@ -388,7 +389,7 @@ def test_save_all_default_configs_model_level_single_file(tmp_path):
     save_all_default_configs(output_dir=tmp_path)
     assert (tmp_path / "cellpose.yaml").exists()
     # No per-version/task files for cellpose
-    task_files = [f for f in tmp_path.glob("cellpose_*.yaml")]
+    task_files = list(tmp_path.glob("cellpose_*.yaml"))
     assert len(task_files) == 0
 
 

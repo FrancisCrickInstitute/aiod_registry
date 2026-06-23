@@ -1,13 +1,6 @@
-[build-system]
-build-backend = 'setuptools.build_meta'
-requires = [
-    'setuptools>=61.0.0',
-]
-
 [project]
 name = "aiod-registry"
 description = "A registry of models for use with AI OnDemand (AIoD)"
-version = "0.0.1"
 authors = [
     {name = "Cameron Shand", email = "cameron.shand@crick.ac.uk"},
     {name = "Numan Ahmed", email = "numan.ahmed@crick.ac.uk"},
@@ -19,8 +12,27 @@ dependencies = [
     "pydantic >= 2.0",
     "pyyaml",
 ]
-requires-python = ">=3.11"
-dynamic = ["readme"]
+requires-python = ">=3.11,<3.13"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+readme = "README.md"
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/FrancisCrickInstitute/aiod_registry"
+documentation = "https://franciscrickinstitute.github.io/aiod_docs/sections/model_registry/"
+source = "https://github.com/FrancisCrickInstitute/aiod_registry"
 
 [project.optional-dependencies]
 dev = [
@@ -28,14 +40,75 @@ dev = [
     "pytest-cov",
 ]
 
+[dependency-groups]
+dev = ["pytest", "pytest-cov"]
+
 [project.scripts]
 aiod-gen-configs = "aiod_registry.utils:_gen_configs_cli"
 
-[tool.setuptools.packages.find]
-include = ["aiod_registry*"]
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.setuptools.dynamic]
-readme = {file = ["README.md"], content-type = "text/markdown"}
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["aiod_registry"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".github"
+]
 
 [tool.pytest.ini_options]
 addopts = "--cov=aiod_registry --cov-report=term-missing"
+
+[tool.ruff]
+line-length = 88
+lint.select = [
+    "E", "F", "W", #flake8
+    "UP", # pyupgrade
+    "I", # isort
+    "BLE", # flake8-blind-exception
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "C4", # flake8-comprehensions
+    "ISC", # flake8-implicit-str-concat
+    "G", # flake8-logging-format
+    "PIE", # flake8-pie
+    "SIM", # flake8-simplify
+]
+lint.ignore = [
+    "E501", # line too long
+]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "*vendored*",
+    "*_vendor*",
+]
