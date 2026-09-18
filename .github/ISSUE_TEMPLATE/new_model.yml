@@ -1,0 +1,58 @@
+name: Request a new model
+description: Ask for a model (or a new version of an existing one) to be added to AIoD
+labels: ["new model"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check [Available Models](https://franciscrickinstitute.github.io/aiod_docs/sections/model_registry/models/)
+        first in case it is already there. If you would like to add it yourself,
+        [Expanding AIoD](https://franciscrickinstitute.github.io/aiod_docs/sections/contributing/expanding/)
+        walks through writing the manifest — PRs are very welcome.
+  - type: input
+    id: model-name
+    attributes:
+      label: Model name
+      placeholder: "Cellpose-SAM"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Is this a new model family, or a new version of an existing one?
+      description: |
+        A *family* is everything runnable in one conda environment/script; a *version*
+        is one specific model within a family. A new family also needs a script and
+        conda environment in Segment-Flow.
+      options:
+        - New model family
+        - New version of an existing family
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Where does it come from?
+      description: Paper, repository, or documentation for the model.
+    validations:
+      required: true
+  - type: input
+    id: weights
+    attributes:
+      label: Where are the weights/checkpoints?
+      description: A public URL, or a filepath if these are restricted to a specific site.
+    validations:
+      required: true
+  - type: input
+    id: task
+    attributes:
+      label: What does it segment?
+      placeholder: "mitochondria, nuclei, everything, ..."
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+      description: Expected input axes, licensing constraints, known quirks.
