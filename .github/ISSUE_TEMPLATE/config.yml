@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Available models
+    url: https://franciscrickinstitute.github.io/aiod_docs/sections/model_registry/models/
+    about: Every model currently in the registry — check here before requesting one.
+  - name: Adding a model yourself
+    url: https://franciscrickinstitute.github.io/aiod_docs/sections/contributing/expanding/
+    about: How to write a manifest and open a PR.
