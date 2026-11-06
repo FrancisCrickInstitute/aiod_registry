@@ -1,6 +1,6 @@
 # Trigger: publish a GitHub release (tag it e.g. v1.2.3 when creating the release)
 # Needs CROSS_REPO_PAT configured
-#   Fine-grained PAT with Contents+PRs read/write on Segment-Flow
+#   Fine-grained PAT with Contents+PRs read/write on Segment-Flow and aiod_docs
 
 
 name: Publish & notify downstream
@@ -87,6 +87,7 @@ jobs:
       matrix:
         repo:
           - FrancisCrickInstitute/Segment-Flow
+          - FrancisCrickInstitute/aiod_docs
 
     steps:
       - name: Dispatch version-bump event to ${{ matrix.repo }}
