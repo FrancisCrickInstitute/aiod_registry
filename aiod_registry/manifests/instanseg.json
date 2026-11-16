@@ -1,0 +1,243 @@
+{
+  "name": "InstanSeg",
+  "short_name": "instanseg",
+  "metadata": {
+    "description": "InstanSeg is an embedding-based instance segmentation method for 2D cell and nucleus segmentation. Its pretrained models cover brightfield histology and fluorescence/multiplexed imaging, and one of them segments nuclei and whole cells simultaneously from any number of channels.",
+    "url": "https://github.com/instanseg/instanseg",
+    "repo": "https://github.com/instanseg/instanseg",
+    "pubs": [
+      {
+        "info": "InstanSeg method; nucleus segmentation in brightfield histology images",
+        "title": "InstanSeg: an embedding-based instance segmentation algorithm optimized for accurate, efficient and portable cell segmentation",
+        "url": "https://doi.org/10.48550/arXiv.2408.15954",
+        "doi": "10.48550/arXiv.2408.15954",
+        "year": 2024,
+        "authors": [
+          {
+            "name": "Thibaut Goldsborough",
+            "affiliation": "School of Informatics, University of Edinburgh, UK",
+            "orcid": "0009-0007-9349-4693",
+            "github": "ThibautGoldsborough"
+          },
+          {
+            "name": "Ben Philps",
+            "affiliation": "School of Informatics, University of Edinburgh, UK"
+          },
+          {
+            "name": "Alan O'Callaghan",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0000-0003-4817-6171"
+          },
+          {
+            "name": "Fiona Inglis",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0009-0009-4322-8439"
+          },
+          {
+            "name": "Leo Leplat",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0009-0006-4178-7980"
+          },
+          {
+            "name": "Andrew Filby",
+            "affiliation": "Flow Cytometry Core Facility, Newcastle University, UK",
+            "orcid": "0000-0001-9078-4360"
+          },
+          {
+            "name": "Hakan Bilen",
+            "affiliation": "School of Informatics, University of Edinburgh, UK",
+            "orcid": "0000-0002-6947-6918"
+          },
+          {
+            "name": "Peter Bankhead",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0000-0003-4851-8813"
+          }
+        ]
+      },
+      {
+        "info": "Channel-invariant architecture; nucleus and whole-cell segmentation in fluorescence and multiplexed images",
+        "title": "A novel channel invariant architecture for the segmentation of cells and nuclei in multiplexed images using InstanSeg",
+        "url": "https://doi.org/10.1101/2024.09.04.611150",
+        "doi": "10.1101/2024.09.04.611150",
+        "year": 2024,
+        "authors": [
+          {
+            "name": "Thibaut Goldsborough",
+            "affiliation": "School of Informatics, University of Edinburgh, UK",
+            "orcid": "0009-0007-9349-4693",
+            "github": "ThibautGoldsborough"
+          },
+          {
+            "name": "Alan O'Callaghan",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0000-0003-4817-6171"
+          },
+          {
+            "name": "Fiona Inglis",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0009-0009-4322-8439"
+          },
+          {
+            "name": "Leo Leplat",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0009-0006-4178-7980"
+          },
+          {
+            "name": "Andrew Filby",
+            "affiliation": "Flow Cytometry Core Facility, Newcastle University, UK",
+            "orcid": "0000-0001-9078-4360"
+          },
+          {
+            "name": "Hakan Bilen",
+            "affiliation": "School of Informatics, University of Edinburgh, UK",
+            "orcid": "0000-0002-6947-6918"
+          },
+          {
+            "name": "Peter Bankhead",
+            "affiliation": "Centre for Genomic and Experimental Medicine, Institute of Genetics and Cancer, University of Edinburgh, UK",
+            "orcid": "0000-0003-4851-8813"
+          }
+        ]
+      }
+    ]
+  },
+  "usage_guide": "InstanSeg is a 2D method: image stacks are segmented slice by slice, so tick 'Re-label output' if you need labels to be consistent in 3D.\n\nPick the version that matches your modality. 'brightfield_nuclei' segments nuclei in RGB H&E/IHC histology and consumes all three colour channels. 'single_channel_nuclei' segments nuclei from one fluorescence channel such as DAPI; use Channel Index to say which one. 'fluorescence_nuclei_and_cells' handles fluorescence and multiplexed images with any number of channels, and is the only version that produces whole cells.\n\nOnly 'fluorescence_nuclei_and_cells' offers both tasks: choose Nuclei or Cytoplasm to pick which output you want, where Cytoplasm means the whole cell including its nucleus. Each task is a separate run of the same network, so ask for both only if you need both.\n\nAll three models were trained at 0.5 microns per pixel. Set Pixel Size to your image's true value so it can be rescaled to match; leave it blank only if your image is already at roughly that resolution.",
+  "versions": {
+    "brightfield_nuclei": {
+      "axes": "CYX",
+      "metadata": {
+        "description": "Nucleus segmentation in brightfield histology (H&E, IHC). Consumes a 3-channel RGB image directly, so it cannot be run on a single channel. Trained on TNBC 2018, LyNSeC, NuInsSeg, IHC TMA and CoNSeP."
+      },
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/instanseg/instanseg/releases/download/instanseg_models_v0.1.1/brightfield_nuclei.zip"
+            }
+          ]
+        }
+      }
+    },
+    "single_channel_nuclei": {
+      "axes": "YX",
+      "metadata": {
+        "description": "Nucleus segmentation from a single fluorescence channel (e.g. DAPI). Use Channel Index to choose which channel of a multi-channel image is segmented. Trained on CPDMI 2023, DSB 2018 and BSST265."
+      },
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/instanseg/instanseg/releases/download/instanseg_models_v0.1.2/single_channel_nuclei.zip"
+            }
+          ]
+        }
+      }
+    },
+    "fluorescence_nuclei_and_cells": {
+      "axes": "CYX",
+      "metadata": {
+        "description": "Channel-invariant nucleus and whole-cell segmentation for fluorescence and multiplexed images with any number of channels. Trained on CPDMI 2023. The network emits both a nucleus and a whole-cell label map; AIoD exposes these as the Nuclei and Cytoplasm tasks, one run each."
+      },
+      "tasks": {
+        "nuclei": {
+          "locations": [
+            {
+              "location": "https://github.com/instanseg/instanseg/releases/download/instanseg_models_v0.1.1/fluorescence_nuclei_and_cells.zip"
+            }
+          ]
+        },
+        "cyto": {
+          "locations": [
+            {
+              "location": "https://github.com/instanseg/instanseg/releases/download/instanseg_models_v0.1.1/fluorescence_nuclei_and_cells.zip"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "Pixel Size",
+      "arg_name": "pixel_size",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Your image's pixel size in microns per pixel. Every InstanSeg model was trained at 0.5 um/px, and this value is used to rescale your image to match before inference. Leave it blank to skip rescaling and segment the image as-is, which is only appropriate if it is already at roughly 0.5 um/px. Note that AIoD does not read the pixel size from your image's metadata: leaving this blank infers nothing, it only disables rescaling."
+    },
+    {
+      "name": "Normalise Image",
+      "arg_name": "normalise",
+      "value": true,
+      "tooltip": "Percentile-normalise each channel before inference. InstanSeg was trained on normalised inputs and clamps out-of-range values, so leave this on unless your data is already normalised."
+    },
+    {
+      "name": "Processing Method",
+      "arg_name": "processing_method",
+      "value": ["auto", "small", "medium"],
+      "default": "auto",
+      "tooltip": "How each substack is segmented. 'small' does it in a single pass, which is fastest but needs the most memory. 'medium' splits it into tiles of Tile Size and merges objects across the tile boundaries. 'auto' picks 'small' below 6.75 megapixels and 'medium' above, and is the safe choice: forcing 'small' on a large substack can exhaust GPU memory."
+    },
+    {
+      "name": "Tile Size",
+      "arg_name": "tile_size",
+      "value": 512,
+      "tooltip": "Tile width and height in pixels, used only when Processing Method resolves to 'medium'. Reduce it if you run out of GPU memory. Must be at least 256, as tiles overlap by 200 pixels."
+    },
+    {
+      "name": "Batch Size",
+      "arg_name": "batch_size",
+      "value": 1,
+      "tooltip": "Number of tiles segmented simultaneously, used only when Processing Method resolves to 'medium'. Raise it for speed on a large GPU, lower it to reduce memory use."
+    },
+    {
+      "name": "Normalisation Subsampling",
+      "arg_name": "normalisation_subsampling_factor",
+      "value": 1,
+      "tooltip": "Subsampling factor used when measuring normalisation percentiles in 'medium' mode. 1 uses every pixel; larger values are faster on big images at the cost of slightly less precise percentiles."
+    },
+    {
+      "name": "Rescale Output",
+      "arg_name": "rescale_output",
+      "value": true,
+      "tooltip": "Resize the output labels back to the input image's size. This only has an effect when Pixel Size is set and differs from the model's 0.5 um/px. Leave it on so masks line up with the image."
+    },
+    {
+      "name": "Channel Indices",
+      "arg_name": "channel_ids",
+      "value": null,
+      "dtype": "list",
+      "tooltip": "Comma-separated, 0-based list of channels to feed to the network, e.g. '0, 2'. Leave blank to use all of them. Only useful for 'fluorescence_nuclei_and_cells', which accepts any number of channels; 'brightfield_nuclei' needs all three RGB channels and 'single_channel_nuclei' takes exactly one (use Channel Index for that)."
+    },
+    {
+      "name": "Mask Threshold",
+      "arg_name": "mask_threshold",
+      "value": null,
+      "dtype": "float",
+      "tooltip": "Threshold used to turn the predicted object maps into masks. Leave blank to use the threshold stored in the model itself. Lower it to grow objects and find more of them, raise it to shrink them and find fewer."
+    },
+    {
+      "name": "Minimum Size",
+      "arg_name": "min_size",
+      "value": null,
+      "dtype": "int",
+      "tooltip": "Objects smaller than this many pixels are discarded. Leave blank to use the model's own default, which differs between versions. Measured at the model's 0.5 um/px working resolution, not in your image's pixels."
+    },
+    {
+      "name": "Device",
+      "arg_name": "device",
+      "value": ["auto", "cuda", "mps", "cpu"],
+      "default": "auto",
+      "tooltip": "Which device to run on. 'auto' uses CUDA if present, then Apple Silicon's MPS, then the CPU. Pick 'cpu' explicitly if you hit numerical problems on MPS, which InstanSeg's own test suite does not cover."
+    },
+    {
+      "name": "Channel Index",
+      "arg_name": "channel_idx",
+      "value": 0,
+      "param_type": "channel",
+      "channel_start": -1,
+      "channel_start_label": "Don't select channel",
+      "tooltip": "Which single channel to segment. Used only by 'single_channel_nuclei': -1 passes the image through unchanged, 0 is the first channel, 1 the second, and so on. Ignored by the versions that consume every channel (see Channel Indices)."
+    }
+  ]
+}
